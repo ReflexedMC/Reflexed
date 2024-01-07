@@ -1,4 +1,4 @@
-package reflexedmc.reflexed;
+package mc.reflexed;
 
 import org.bukkit.plugin.java.JavaPlugin;
 

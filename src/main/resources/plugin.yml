@@ -1,5 +1,5 @@
 name: Reflexed
 version: '${project.version}'
-main: reflexedmc.reflexed.Reflexed
+main: mc.reflexed.Reflexed
 api-version: '1.20'
 load: STARTUP
