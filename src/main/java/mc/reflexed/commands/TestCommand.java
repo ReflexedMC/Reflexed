@@ -12,10 +12,12 @@ public class TestCommand implements ICommandExecutor {
 
     @Override
     public boolean execute(CommandSender sender, String[] args, String label) {
-        sender.sendMessage("Unregistering command...");
+        sender.sendMessage("§cUnregistering command...");
 
         FlexedCommand command = Reflexed.get().getCommandManager().getCommandFromExecutor(this);
         Reflexed.get().getCommandManager().unregister(command);
+
+        sender.sendMessage("§aUnregistered command!");
         return false;
     }
 

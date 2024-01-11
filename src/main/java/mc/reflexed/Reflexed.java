@@ -2,13 +2,16 @@ package mc.reflexed;
 
 import lombok.Getter;
 import mc.reflexed.command.CommandManager;
+import mc.reflexed.commands.GrantCommand;
 import mc.reflexed.commands.TestCommand;
 import mc.reflexed.event.EventManager;
 import mc.reflexed.event.data.EventInfo;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerMoveEvent;
+import mc.reflexed.user.User;
+import mc.reflexed.user.UserRank;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import static mc.reflexed.user.User.users;
 
 @Getter
 public final class Reflexed extends JavaPlugin {
@@ -25,13 +28,15 @@ public final class Reflexed extends JavaPlugin {
     public void onEnable() {
         eventManager.onEnable();
 
-        commandManager.register(new TestCommand());
+        commandManager.register(
+                new GrantCommand(), new TestCommand()
+        );
         eventManager.register(this);
     }
 
     @EventInfo
-    public void onMove(PlayerMoveEvent e) {
-        e.getPlayer().sendMessage("Stop moving!");
+    public void onJoin(PlayerJoinEvent e) {
+        users.add(new User(e.getPlayer(), UserRank.DEFAULT));
     }
 
     public static Reflexed get() {
