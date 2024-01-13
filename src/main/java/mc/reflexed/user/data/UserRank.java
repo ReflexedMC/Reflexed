@@ -1,4 +1,4 @@
-package mc.reflexed.user;
+package mc.reflexed.user.data;
 
 import lombok.Getter;
 

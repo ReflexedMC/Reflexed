@@ -3,7 +3,8 @@ package mc.reflexed.commands;
 import mc.reflexed.command.ICommandExecutor;
 import mc.reflexed.command.data.CommandInfo;
 import mc.reflexed.user.User;
-import mc.reflexed.user.UserRank;
+import mc.reflexed.user.data.UserRank;
+import mc.reflexed.util.ChatUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -27,7 +28,10 @@ public class GrantCommand implements ICommandExecutor {
             return false;
         }
 
-        User user = User.getUser(target);
+        User user = User.getUsers().stream()
+                .filter(u -> u.getPlayer().getUniqueId().equals(target.getUniqueId()))
+                .findFirst()
+                .orElse(null);
 
         if(user == null) {
             sender.sendMessage("§cUser not found!");

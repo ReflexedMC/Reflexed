@@ -79,7 +79,7 @@
         <dependency>
             <groupId>com.github.ReflexedMC</groupId>
             <artifactId>ReflexedBase</artifactId>
-            <version>c57682c638</version>
+            <version>a70442fc27</version>
         </dependency>
     </dependencies>
 </project>
