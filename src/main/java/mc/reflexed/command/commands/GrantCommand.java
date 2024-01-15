@@ -1,17 +1,18 @@
-package mc.reflexed.commands;
+package mc.reflexed.command.commands;
 
 import mc.reflexed.command.ICommandExecutor;
+import mc.reflexed.command.Permission;
 import mc.reflexed.command.data.CommandInfo;
 import mc.reflexed.user.User;
 import mc.reflexed.user.data.UserRank;
-import mc.reflexed.util.ChatUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.List;
 
-@CommandInfo(name = "grant", description = "grants a rank to a player", permission = "reflexed.grant")
+@CommandInfo(name = "grant", description = "grants a rank to a player")
+@Permission(UserRank.ADMIN)
 public class GrantCommand implements ICommandExecutor {
 
     @Override

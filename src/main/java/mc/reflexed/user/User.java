@@ -1,5 +1,6 @@
 package mc.reflexed.user;
 
+import java.sql.Ref;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,6 +41,7 @@ public class User {
 
     public void updateRank(UserRank rank) {
         this.rank = rank;
+
         ChatUtil.message(String.format("§aYour rank has been updated to %s§a!", rank.getPrefix()), player);
 
         Reflexed.get().getUserDatabase().saveUser(this);
@@ -67,5 +69,9 @@ public class User {
 
     public static User getUser(Player target) {
         return users.stream().filter(user -> user.getPlayer().equals(target)).findFirst().orElse(null);
+    }
+
+    public static List<User> getUsers(UserRank rank) {
+        return users.stream().filter(user -> user.getRank() == rank).toList();
     }
 }

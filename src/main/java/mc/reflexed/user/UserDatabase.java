@@ -1,6 +1,5 @@
 package mc.reflexed.user;
 
-import mc.reflexed.Reflexed;
 import mc.reflexed.user.data.Savable;
 import mc.reflexed.user.data.Type;
 import mc.reflexed.user.data.UserRank;

@@ -2,8 +2,9 @@ package mc.reflexed;
 
 import lombok.Getter;
 import mc.reflexed.command.CommandManager;
-import mc.reflexed.commands.GrantCommand;
-import mc.reflexed.commands.TestCommand;
+import mc.reflexed.command.ReflexedCommand;
+import mc.reflexed.command.commands.GrantCommand;
+import mc.reflexed.command.commands.TestCommand;
 import mc.reflexed.event.EventManager;
 import mc.reflexed.event.data.EventInfo;
 import mc.reflexed.user.User;
@@ -33,9 +34,11 @@ public final class Reflexed extends JavaPlugin {
     @Override
     public void onEnable() {
         eventManager.onEnable();
-        commandManager.register(
-                new GrantCommand(), new TestCommand()
+
+        ReflexedCommand.createCommands(
+                new TestCommand(), new GrantCommand()
         );
+
         eventManager.register(this);
 
         if(!getDataFolder().exists() && !getDataFolder().mkdirs()) {
@@ -46,7 +49,10 @@ public final class Reflexed extends JavaPlugin {
 
         userDatabase = new UserDatabase(new File(getDataFolder(), "users.yml"));
 
-        Bukkit.getOnlinePlayers().forEach(player -> User.getUsers().add(userDatabase.getUser(player)));
+        Bukkit.getOnlinePlayers().forEach(player -> {
+            User user = userDatabase.getUser(player);
+            User.getUsers().add(user);
+        });
     }
 
     @Override
@@ -62,10 +68,12 @@ public final class Reflexed extends JavaPlugin {
 
     @EventInfo
     public void onJoin(PlayerJoinEvent e) {
-        User.getUsers().add(userDatabase.getUser(e.getPlayer()));
+        User user = userDatabase.getUser(e.getPlayer());
+        User.getUsers().add(user);
 
         ChatUtil.broadcast(String.valueOf(User.getUsers().size()));
     }
+
 
     public static Reflexed get() {
         return getPlugin(Reflexed.class);

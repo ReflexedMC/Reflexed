@@ -2,16 +2,22 @@ package mc.reflexed.user.data;
 
 import lombok.Getter;
 
+@Getter
 public enum UserRank {
-    ADMIN("§c[ADMIN]"),
-    MODERATOR("§d[MODERATOR]"),
-    DONATOR("§9[DONATOR]"),
-    DEFAULT("§7[Default]");
+    ADMIN("§c[ADMIN]", 4),
+    MODERATOR("§d[MODERATOR]", 3),
+    DONATOR("§9[DONATOR]", 2),
+    DEFAULT("§7[Default]", 1);
 
-    UserRank(String prefix) {
+    UserRank(String prefix, int level) {
         this.prefix = prefix;
+        this.level = level;
     }
 
-    @Getter
     final String prefix;
+    final int level;
+
+    public static UserRank forName(String name) {
+        return UserRank.valueOf(name.toUpperCase());
+    }
 }

@@ -1,23 +1,18 @@
-package mc.reflexed.commands;
+package mc.reflexed.command.commands;
 
-import mc.reflexed.Reflexed;
-import mc.reflexed.command.CommandManager;
-import mc.reflexed.command.FlexedCommand;
 import mc.reflexed.command.ICommandExecutor;
+import mc.reflexed.command.Permission;
 import mc.reflexed.command.data.CommandInfo;
+import mc.reflexed.user.data.UserRank;
 import org.bukkit.command.CommandSender;
 
-@CommandInfo(name = "unregister")
+@CommandInfo(name = "onlyAdmin")
+@Permission(UserRank.ADMIN)
 public class TestCommand implements ICommandExecutor {
 
     @Override
     public boolean execute(CommandSender sender, String[] args, String label) {
-        sender.sendMessage("§cUnregistering command...");
-
-        FlexedCommand command = Reflexed.get().getCommandManager().getCommandFromExecutor(this);
-        Reflexed.get().getCommandManager().unregister(command);
-
-        sender.sendMessage("§aUnregistered command!");
+        sender.sendMessage("Test command executed!");
         return false;
     }
 
