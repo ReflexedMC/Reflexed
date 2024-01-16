@@ -55,10 +55,10 @@ public class StatsCommand implements ICommandExecutor {
         String rank = UserRank.forName(Objects.requireNonNull(user.getString("rank"))).getPrefix();
 
         sender.sendMessage(Component.text("§d§l" + player.getName() + "'s Stats"));
-        sender.sendMessage(Component.text("§dKills: §f" + (int)kills));
-        sender.sendMessage(Component.text("§dDeaths: §f" + (int)deaths));
-        sender.sendMessage(Component.text("§dK/D: §f" + MathUtil.toFixed(kd, 2)));
-        sender.sendMessage(Component.text("§dRank: §f" + rank));
+        sender.sendMessage(Component.text("§d• Kills: §f" + (int)kills));
+        sender.sendMessage(Component.text("§d• Deaths: §f" + (int)deaths));
+        sender.sendMessage(Component.text("§d• KDR: §f" + MathUtil.toFixed(kd, 2)));
+        sender.sendMessage(Component.text("§d• Rank: §f" + rank));
         return false;
     }
 }
