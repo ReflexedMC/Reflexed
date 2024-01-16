@@ -40,7 +40,7 @@ public final class Reflexed extends JavaPlugin {
         ReflexedCommand.createCommands(
                 new TestCommand(), new GrantCommand(),
                 new SetSpawnCommand(), new SpawnCommand(),
-                new StatsCommand()
+                new StatsCommand(), new GamemodeCommand()
         );
 
         eventManager.register(this);
