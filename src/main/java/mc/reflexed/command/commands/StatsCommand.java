@@ -55,6 +55,26 @@ public class StatsCommand implements ICommandExecutor {
         User user = User.getUser(player.getPlayer());
 
         sendStats(sender, user.getKills(), user.getDeaths(), user.getKills() / user.getDeaths(), user.getRank().getPrefix());
+        if(user == null) {
+            sender.sendMessage(Component.text("§cPlayer not found!"));
+            return false;
+        }
+
+        if(!user.isSet("kills") || !user.isSet("deaths")) {
+            sender.sendMessage(Component.text("§cPlayer has no stats!"));
+            return false;
+        }
+
+        double kills = (int)user.getDouble("kills");
+        double deaths = (int)user.getDouble("deaths");
+        double kd = MathUtil.toFixed(kills / deaths, 2);
+        String rank = UserRank.forName(Objects.requireNonNull(user.getString("rank"))).getPrefix();
+
+        sender.sendMessage(Component.text("§d§l" + player.getName() + "'s Stats"));
+        sender.sendMessage(Component.text("§d• Kills: §f" + (int)kills));
+        sender.sendMessage(Component.text("§d• Deaths: §f" + (int)deaths));
+        sender.sendMessage(Component.text("§d• KDR: §f" + MathUtil.toFixed(kd, 2)));
+        sender.sendMessage(Component.text("§d• Rank: §f" + rank));
         return false;
     }
 
