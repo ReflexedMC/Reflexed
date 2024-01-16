@@ -26,39 +26,43 @@ public class StatsCommand implements ICommandExecutor {
 
         OfflinePlayer player = (sender instanceof Player) ? (Player) sender : null;
 
-        if(args.length == 1) {
+        if(args.length >= 1) {
             player = sender.getServer().getOfflinePlayer(args[0]);
         }
 
-        if(player == null) {
-            sender.sendMessage(Component.text("§c/stats <player>"));
+        if(player.getPlayer() == null) {
+            ConfigurationSection user = Reflexed.get()
+                    .getUserDatabase()
+                    .getOfflineUser(player);
+
+            if (user == null) {
+                sender.sendMessage(Component.text("§cPlayer not found!"));
+                return false;
+            }
+
+            if (!user.isSet("kills") || !user.isSet("deaths")) {
+                sender.sendMessage(Component.text("§cPlayer has no stats!"));
+                return false;
+            }
+
+            double kills = user.getDouble("kills");
+            double deaths = user.getDouble("deaths");
+
+            sendStats(sender, kills, deaths, kills / deaths,  UserRank.forName(Objects.requireNonNull(user.getString("rank"))).getPrefix());
             return false;
         }
 
-        ConfigurationSection user = Reflexed.get()
-                .getUserDatabase()
-                .getOfflineUser(player);
+        User user = User.getUser(player.getPlayer());
 
-        if(user == null) {
-            sender.sendMessage(Component.text("§cPlayer not found!"));
-            return false;
-        }
+        sendStats(sender, user.getKills(), user.getDeaths(), user.getKills() / user.getDeaths(), user.getRank().getPrefix());
+        return false;
+    }
 
-        if(!user.isSet("kills") || !user.isSet("deaths")) {
-            sender.sendMessage(Component.text("§cPlayer has no stats!"));
-            return false;
-        }
-
-        double kills = (int)user.getDouble("kills");
-        double deaths = (int)user.getDouble("deaths");
-        double kd = MathUtil.toFixed(kills / deaths, 2);
-        String rank = UserRank.forName(Objects.requireNonNull(user.getString("rank"))).getPrefix();
-
-        sender.sendMessage(Component.text("§d§l" + player.getName() + "'s Stats"));
-        sender.sendMessage(Component.text("§dKills: §f" + (int)kills));
-        sender.sendMessage(Component.text("§dDeaths: §f" + (int)deaths));
+    private void sendStats(CommandSender sender, double kills, double deaths, double kd, String rank) {
+        sender.sendMessage(Component.text("§d§l" + sender.getName() + "'s Stats"));
+        sender.sendMessage(Component.text("§dKills: §f" + (int) kills));
+        sender.sendMessage(Component.text("§dDeaths: §f" + (int) deaths));
         sender.sendMessage(Component.text("§dK/D: §f" + MathUtil.toFixed(kd, 2)));
         sender.sendMessage(Component.text("§dRank: §f" + rank));
-        return false;
     }
 }
