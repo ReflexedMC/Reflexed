@@ -54,7 +54,7 @@ public class GamemodeCommand implements ICommandExecutor {
         return new String[0];
     }
 
-    public void updateGamemode(Player commandPlayer, Player player, GameMode gameMode) {
+    private void updateGamemode(Player commandPlayer, Player player, GameMode gameMode) {
         if (commandPlayer != player) {
             ChatUtil.message("§7You have updated §d" + player.getName() + "§7's gamemode to §d" + gameMode.name() + "§7!", commandPlayer);
         }
