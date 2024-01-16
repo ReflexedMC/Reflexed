@@ -23,7 +23,7 @@ public class GamemodeCommand implements ICommandExecutor {
             return false;
         }
 
-        Player player;
+        Player player = commandPlayer;
 
         if (args.length >= 1) {
             Player newPlayer = Bukkit.getServer().getPlayer(args[0]);
@@ -32,8 +32,6 @@ public class GamemodeCommand implements ICommandExecutor {
                 return false;
             }
             player = newPlayer;
-        } else {
-            player = commandPlayer;
         }
 
         switch (label) {
