@@ -4,6 +4,7 @@ import mc.reflexed.command.ICommandExecutor;
 import mc.reflexed.command.Permission;
 import mc.reflexed.command.data.CommandInfo;
 import mc.reflexed.user.data.UserRank;
+import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
 
 @CommandInfo(name = "onlyAdmin")
@@ -12,7 +13,7 @@ public class TestCommand implements ICommandExecutor {
 
     @Override
     public boolean execute(CommandSender sender, String[] args, String label) {
-        sender.sendMessage("Test command executed!");
+        sender.sendMessage(Component.text("Test command executed!"));
         return false;
     }
 

@@ -1,6 +1,5 @@
 package mc.reflexed.user;
 
-import java.sql.Ref;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,9 +15,13 @@ import mc.reflexed.user.data.UserRank;
 import mc.reflexed.util.ChatUtil;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
-import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.inventory.ItemStack;
 
 @Getter @Setter
 public class User {
@@ -32,6 +35,9 @@ public class User {
 
     @Savable(Type.ENUM)
     private UserRank rank;
+
+    @Savable(Type.NUMBER)
+    private double kills, deaths;
 
     public User(Player player, UserRank rank) {
         this.player = player;
@@ -65,6 +71,23 @@ public class User {
         String message = String.format("%s§7:§r %s", rankAndPlayer, PlainTextComponentSerializer.plainText().serialize(e.message()));
 
         ChatUtil.broadcast(message);
+    }
+
+    @EventInfo
+    public void onRespawn(Player player, PlayerRespawnEvent event) {
+        ItemStack stick = new ItemStack(Material.STICK);
+
+        stick.getItemMeta().displayName(Component.text("§a§lKnockback Stick"));
+        stick.addUnsafeEnchantment(Enchantment.KNOCKBACK, 1);
+
+        player.getInventory().addItem(stick, new ItemStack(Material.WHITE_CONCRETE, 32));
+    }
+
+    public double getKDR() {
+        if(deaths == 0) return kills;
+        if(kills == 0) return 0.0;
+
+        return kills / deaths;
     }
 
     public static User getUser(Player target) {

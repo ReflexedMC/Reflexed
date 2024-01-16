@@ -3,6 +3,8 @@ package mc.reflexed.user;
 import mc.reflexed.user.data.Savable;
 import mc.reflexed.user.data.Type;
 import mc.reflexed.user.data.UserRank;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.yaml.snakeyaml.error.YAMLException;
@@ -93,6 +95,14 @@ public class UserDatabase {
         }
 
         return null;
+    }
+
+    public ConfigurationSection getOfflineUser(OfflinePlayer player) {
+        reloadConfig();
+
+        if(!yamlConfiguration.contains(player.getUniqueId().toString())) return null;
+
+        return yamlConfiguration.getConfigurationSection(player.getUniqueId().toString());
     }
 
     public void reloadConfig() {

@@ -5,6 +5,7 @@ import mc.reflexed.command.Permission;
 import mc.reflexed.command.data.CommandInfo;
 import mc.reflexed.user.User;
 import mc.reflexed.user.data.UserRank;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -18,14 +19,14 @@ public class GrantCommand implements ICommandExecutor {
     @Override
     public boolean execute(CommandSender sender, String[] args, String label) {
         if(args.length < 2) {
-            sender.sendMessage("§cUsage: /grant <player> <rank>");
+            sender.sendMessage(Component.text("§cUsage: /grant <player> <rank>"));
             return false;
         }
 
         Player target = Bukkit.getPlayer(args[0]);
 
         if(target == null) {
-            sender.sendMessage("§cPlayer not found!");
+            sender.sendMessage(Component.text("§cPlayer not found!"));
             return false;
         }
 
@@ -35,21 +36,21 @@ public class GrantCommand implements ICommandExecutor {
                 .orElse(null);
 
         if(user == null) {
-            sender.sendMessage("§cUser not found!");
+            sender.sendMessage(Component.text("§cUser not found!"));
             return false;
         }
 
         UserRank rank = getRank(args[1]);
 
         if(rank == null) {
-            sender.sendMessage("§cRank not found!");
+            sender.sendMessage(Component.text("§cRank not found!"));
             return false;
         }
 
         user.updateRank(rank);
         
         if(rank == user.getRank()) {
-            sender.sendMessage("§aSuccessfully updated rank for " + target.getName() + " to " + rank.name().toLowerCase() + "!");
+            sender.sendMessage(Component.text("§aSuccessfully updated rank for " + target.getName() + " to " + rank.name().toLowerCase() + "!"));
             return false;
         }
         return false;

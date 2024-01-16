@@ -1,12 +1,13 @@
 package mc.reflexed;
 
 import lombok.Getter;
+import mc.reflexed.combat.CombatTag;
 import mc.reflexed.command.CommandManager;
 import mc.reflexed.command.ReflexedCommand;
-import mc.reflexed.command.commands.GrantCommand;
-import mc.reflexed.command.commands.TestCommand;
+import mc.reflexed.command.commands.*;
 import mc.reflexed.event.EventManager;
 import mc.reflexed.event.data.EventInfo;
+import mc.reflexed.map.GameMap;
 import mc.reflexed.user.User;
 import mc.reflexed.user.UserDatabase;
 import mc.reflexed.util.ChatUtil;
@@ -25,6 +26,7 @@ public final class Reflexed extends JavaPlugin {
     private final EventManager eventManager;
 
     private UserDatabase userDatabase;
+    private GameMap gameMap;
 
     public Reflexed() {
         this.commandManager = new CommandManager(this);
@@ -36,7 +38,9 @@ public final class Reflexed extends JavaPlugin {
         eventManager.onEnable();
 
         ReflexedCommand.createCommands(
-                new TestCommand(), new GrantCommand()
+                new TestCommand(), new GrantCommand(),
+                new SetSpawnCommand(), new SpawnCommand(),
+                new StatsCommand()
         );
 
         eventManager.register(this);
@@ -48,6 +52,7 @@ public final class Reflexed extends JavaPlugin {
         }
 
         userDatabase = new UserDatabase(new File(getDataFolder(), "users.yml"));
+        gameMap = new GameMap(this);
 
         Bukkit.getOnlinePlayers().forEach(player -> {
             User user = userDatabase.getUser(player);
