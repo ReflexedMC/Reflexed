@@ -23,6 +23,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
 
 @Getter @Setter
@@ -48,6 +49,7 @@ public class User {
 
     private boolean pearlCooldown;
     private long pearlCooldownTime;
+    private double enderPearlDeaths;
 
     public User(Player player, UserRank rank) {
         this.player = player;
@@ -113,6 +115,8 @@ public class User {
             if(item == null) return;
             if(item.getType() != Material.ENDER_PEARL) return;
 
+            enderPearlDeaths = deaths;
+
             if(pearlCooldown && pearlCooldownTime != -1) {
                 long timeLeft = pearlCooldownTime - System.currentTimeMillis();
 
@@ -130,6 +134,13 @@ public class User {
             pearlCooldown = true;
             pearlCooldownTime = System.currentTimeMillis() + 5000;
         }
+    }
+
+    @EventInfo
+    public void onTeleport(Player player, PlayerTeleportEvent event) {
+        if (event.getCause() != PlayerTeleportEvent.TeleportCause.ENDER_PEARL) return;
+        if (deaths == enderPearlDeaths) return;
+        event.setCancelled(true);
     }
 
     public double getKDR() {
