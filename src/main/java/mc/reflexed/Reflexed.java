@@ -75,6 +75,8 @@ public final class Reflexed extends JavaPlugin {
     @EventInfo
     public void onJoin(PlayerJoinEvent e) {
         User user = userDatabase.getUser(e.getPlayer());
+        user.setJoinTime((int) System.currentTimeMillis());
+
         User.getUsers().add(user);
 
         ChatUtil.broadcast(String.valueOf(User.getUsers().size()));

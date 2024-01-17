@@ -46,6 +46,10 @@ public class User {
     private boolean pearlCooldown;
     private long pearlCooldownTime;
 
+    @Savable(Type.NUMBER)
+    private int playTime;
+    private int joinTime;
+
     public User(Player player, UserRank rank) {
         this.player = player;
         this.rank = rank;
@@ -62,6 +66,7 @@ public class User {
 
     @EventInfo
     public void onQuit(Player player, PlayerQuitEvent e) {
+        playTime += System.currentTimeMillis() - joinTime;
         Reflexed.get().getUserDatabase().saveUser(this);
 
         eventManager.unregister(this);
