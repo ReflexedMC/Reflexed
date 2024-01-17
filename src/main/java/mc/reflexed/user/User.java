@@ -64,9 +64,13 @@ public class User {
         Reflexed.get().getUserDatabase().saveUser(this);
     }
 
+    public int fetchPlayTime() {
+        return (int) (playTime + (System.currentTimeMillis() - joinTime));
+    }
+
     @EventInfo
     public void onQuit(Player player, PlayerQuitEvent e) {
-        playTime += System.currentTimeMillis() - joinTime;
+        playTime = fetchPlayTime();
         Reflexed.get().getUserDatabase().saveUser(this);
 
         eventManager.unregister(this);

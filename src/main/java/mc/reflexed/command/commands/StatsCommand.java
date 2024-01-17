@@ -45,7 +45,7 @@ public class StatsCommand implements ICommandExecutor {
                     return false;
                 }
 
-                sendStats(sender, player.getName(), user.getKills(), user.getDeaths(), user.getKDR(), user.getRank().getPrefix());
+                sendStats(sender, player.getName(), user.getKills(), user.getDeaths(), user.getKDR(), user.getRank().getPrefix(), user.fetchPlayTime());
                 return false;
             }
 
@@ -76,21 +76,33 @@ public class StatsCommand implements ICommandExecutor {
 
         User user = User.getUser(player.getPlayer());
 
-        sendStats(sender, sender.getName(), user.getKills(), user.getDeaths(), user.getKDR(), user.getRank().getPrefix(), user.getPlayTime());
+        sendStats(sender, sender.getName(), user.getKills(), user.getDeaths(), user.getKDR(), user.getRank().getPrefix(), user.fetchPlayTime());
         return false;
     }
 
     private void sendStats(CommandSender sender, String name, double kills, double deaths, double kd, String rank, int playTime) {
 //        format int in milliseconds to days, hours, minutes, seconds
-        int days = playTime / 86400000;
-        int hours = (playTime % 86400000) / 3600000;
-        int minutes = ((playTime % 86400000) % 3600000) / 60000;
-        int seconds = (((playTime % 86400000) % 3600000) % 60000) / 1000;
+        double days = (double) playTime / 86400000;
+        double hours = ((double) playTime % 86400000) / 3600000;
+        double minutes = (((double) playTime % 86400000) % 3600000) / 60000;
+        double seconds = ((((double) playTime % 86400000) % 3600000) % 60000) / 1000;
+
+        String playtimeString = "";
+        if (days > 0) {
+            playtimeString = MathUtil.toFixed(days, 2) + "days";
+        } else if (hours > 0) {
+            playtimeString = MathUtil.toFixed(hours, 2) + "hours";
+        } else if (minutes > 0) {
+            playtimeString = MathUtil.toFixed(minutes, 2) + "minutes";
+        } else if (seconds > 0) {
+            playtimeString = MathUtil.toFixed(seconds, 2) + "seconds";
+        }
+
         sender.sendMessage(Component.text("§d§l" + name + "'s Stats"));
         sender.sendMessage(Component.text("§d• Kills: §f" + (int)kills));
         sender.sendMessage(Component.text("§d• Deaths: §f" + (int)deaths));
         sender.sendMessage(Component.text("§d• KDR: §f" + MathUtil.toFixed(kd, 2)));
-        sender.sendMessage(Component.text("§d• Playtime: §f" + days + "days " + hours + "hours " + minutes + "minutes " + seconds + "seconds"));
+        sender.sendMessage(Component.text("§d• Playtime: §f" + playtimeString));
         sender.sendMessage(Component.text("§d• Rank: §f" + rank));
     }
 }
