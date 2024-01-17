@@ -7,6 +7,7 @@ import mc.reflexed.user.User;
 import mc.reflexed.user.data.UserRank;
 import mc.reflexed.util.MathUtil;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -24,42 +25,62 @@ public class StatsCommand implements ICommandExecutor {
             return false;
         }
 
-        OfflinePlayer player = (sender instanceof Player) ? (Player) sender : null;
+        OfflinePlayer player = (OfflinePlayer) sender;
 
         if(args.length >= 1) {
-            player = sender.getServer().getOfflinePlayer(args[0]);
-        }
+            player = Bukkit.getOfflinePlayer(args[0]);
 
-        if(player.getPlayer() == null) {
-            ConfigurationSection user = Reflexed.get()
+            if(!player.hasPlayedBefore()) {
+                sender.sendMessage(Component.text("§cThat player has never played before."));
+                return false;
+            }
+
+            if(player.isOnline()) {
+                Player onlinePlayer = player.getPlayer();
+
+                User user = User.getUser(onlinePlayer);
+
+                if(user == null) {
+                    sender.sendMessage(Component.text("§cSomething went wrong."));
+                    return false;
+                }
+
+                sendStats(sender, player.getName(), user.getKills(), user.getDeaths(), user.getKDR(), user.getRank().getPrefix());
+                return false;
+            }
+
+            ConfigurationSection section = Reflexed.get()
                     .getUserDatabase()
                     .getOfflineUser(player);
 
-            if (user == null) {
-                sender.sendMessage(Component.text("§cPlayer not found!"));
+            if(section == null) {
+                sender.sendMessage(Component.text("§cSomething went wrong."));
                 return false;
             }
 
-            if (!user.isSet("kills") || !user.isSet("deaths")) {
-                sender.sendMessage(Component.text("§cPlayer has no stats!"));
-                return false;
-            }
+            double kills = section.getDouble("kills");
+            double deaths = section.getDouble("deaths");
+            double kdr = kills / deaths;
 
-            double kills = user.getDouble("kills");
-            double deaths = user.getDouble("deaths");
+            String rank = Objects.requireNonNull(UserRank.forName(Objects.requireNonNull(section.getString("rank")))).getPrefix();
 
-            sendStats(sender, kills, deaths, kills / deaths,  UserRank.forName(Objects.requireNonNull(user.getString("rank"))).getPrefix());
+            sendStats(sender, player.getName(), kills, deaths, kdr, rank);
+            return false;
+        }
+
+        if(player.getPlayer() == null) {
+            sender.sendMessage(Component.text("§cSomething went wrong."));
             return false;
         }
 
         User user = User.getUser(player.getPlayer());
 
-        sendStats(sender, user.getKills(), user.getDeaths(), user.getKills() / user.getDeaths(), user.getRank().getPrefix());
+        sendStats(sender, sender.getName(), user.getKills(), user.getDeaths(), user.getKDR(), user.getRank().getPrefix());
         return false;
     }
 
-    private void sendStats(CommandSender sender, double kills, double deaths, double kd, String rank) {
-        sender.sendMessage(Component.text("§d§l" + sender.getName() + "'s Stats"));
+    private void sendStats(CommandSender sender, String name, double kills, double deaths, double kd, String rank) {
+        sender.sendMessage(Component.text("§d§l" + name + "'s Stats"));
         sender.sendMessage(Component.text("§d• Kills: §f" + (int)kills));
         sender.sendMessage(Component.text("§d• Deaths: §f" + (int)deaths));
         sender.sendMessage(Component.text("§d• KDR: §f" + MathUtil.toFixed(kd, 2)));

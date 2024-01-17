@@ -13,11 +13,15 @@ import mc.reflexed.user.data.Savable;
 import mc.reflexed.user.data.Type;
 import mc.reflexed.user.data.UserRank;
 import mc.reflexed.util.ChatUtil;
+import mc.reflexed.util.MathUtil;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
@@ -38,6 +42,9 @@ public class User {
 
     @Savable(Type.NUMBER)
     private double kills, deaths;
+
+    private boolean pearlCooldown;
+    private long pearlCooldownTime;
 
     public User(Player player, UserRank rank) {
         this.player = player;
@@ -75,13 +82,36 @@ public class User {
 
     @EventInfo
     public void onRespawn(Player player, PlayerRespawnEvent event) {
-        ItemStack stick = new ItemStack(Material.STICK);
-
-        stick.getItemMeta().displayName(Component.text("§a§lKnockback Stick"));
-        stick.addUnsafeEnchantment(Enchantment.KNOCKBACK, 1);
-
-        player.getInventory().addItem(stick, new ItemStack(Material.WHITE_CONCRETE, 32));
+        Reflexed.get().getGameMap().giveStuff(player, true);
     }
+
+    @EventInfo
+    public void onItemUsed(Player player, PlayerInteractEvent event) {
+        if(event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+            ItemStack item = event.getItem();
+
+            if(item == null) return;
+            if(item.getType() != Material.ENDER_PEARL) return;
+
+            if(pearlCooldown && pearlCooldownTime != -1) {
+                long timeLeft = pearlCooldownTime - System.currentTimeMillis();
+
+                if(timeLeft <= 0) {
+                    pearlCooldown = false;
+                    pearlCooldownTime = -1;
+                    return;
+                }
+
+                ChatUtil.message(String.format("§cYou cannot use this for another %s seconds!", MathUtil.round(timeLeft / 1000.0, 1)), player);
+                event.setCancelled(true);
+                return;
+            }
+
+            pearlCooldown = true;
+            pearlCooldownTime = System.currentTimeMillis() + 5000;
+        }
+    }
+
 
     public double getKDR() {
         if(deaths == 0) return kills;

@@ -4,6 +4,7 @@ import mc.reflexed.Reflexed;
 import mc.reflexed.combat.CombatTag;
 import mc.reflexed.event.data.EventInfo;
 import mc.reflexed.map.block.ReflexedBlock;
+import mc.reflexed.map.block.ReflexedCobweb;
 import mc.reflexed.user.User;
 import mc.reflexed.user.data.UserRank;
 import mc.reflexed.util.ChatUtil;
@@ -53,8 +54,14 @@ public class GameMap {
         if(player.getGameMode() == GameMode.CREATIVE) return;
 
         boolean isWhiteConcrete = event.getBlock().getType() == Material.WHITE_CONCRETE;
+        boolean isCobWeb = event.getBlock().getType() == Material.COBWEB;
+
         if(isWhiteConcrete) {
             this.blocks.add(ReflexedBlock.fromLocation(player, event.getBlock().getLocation()));
+        }
+
+        if(isCobWeb) {
+            this.blocks.add(new ReflexedCobweb(player, event.getBlock().getLocation()));
         }
     }
 
@@ -120,32 +127,31 @@ public class GameMap {
 
             CombatTag tag = CombatTag.getTag(player);
 
-            player.getInventory().clear();
-
-            ItemStack stick = new ItemStack(Material.STICK);
-            stick.getItemMeta().displayName(Component.text("§a§lKnockback Stick"));
-            stick.addUnsafeEnchantment(Enchantment.KNOCKBACK, 1);
-            player.getInventory().addItem(stick, new ItemStack(Material.WHITE_CONCRETE, 32));
-
             User user = User.getUser(player);
             user.setDeaths(user.getDeaths() + 1);
 
             if(tag != null) {
                 tag.unregister();
 
-                User damager = User.getUser(tag.getDamager());
-                damager.setKills(damager.getKills() + 1);
+                User killer = User.getUser(tag.getDamager());
+                killer.setKills(killer.getKills() + 1);
 
                 ChatUtil.broadcast("§d" + player.getName() + " §7was killed by §d" + tag.getDamager().getName() + "§7!");
+                ChatUtil.message("§cYou were killed by §d" + tag.getDamager().getName() + "§c!", player);
+                ChatUtil.message("§aYou now have §d" + (int)killer.getKills() + " §akills! with a KDR of §d" + MathUtil.toFixed(killer.getKDR(), 2) + "§a!", tag.getDamager());
 
-                player.sendMessage("§cYou were killed by §d" + tag.getDamager().getName() + "§c!");
+                int pearls = getItemCount(tag.getDamager(), Material.ENDER_PEARL), cobwebs = getItemCount(tag.getDamager(), Material.COBWEB);
 
-                tag.getDamager().sendMessage("§aYou now have §d" + (int)damager.getKills() + " §akills! with a KDR of §d" + MathUtil.toFixed(damager.getKDR(), 2) + "§a!");
+                if(pearls < 3) tag.getDamager().getInventory().addItem(new ItemStack(Material.ENDER_PEARL));
+                if(cobwebs < 2) tag.getDamager().getInventory().addItem(new ItemStack(Material.COBWEB));
+
                 player.setHealth(20);
                 player.setFoodLevel(20);
+                giveStuff(player, true);
                 return;
             }
 
+            giveStuff(player, true);
             user.setDeaths(user.getDeaths() + 1);
             ChatUtil.broadcast("§d" + player.getName() + " §7died!");
             player.setHealth(20);
@@ -158,6 +164,34 @@ public class GameMap {
         if(event.getEntityType() != EntityType.PLAYER) return;
 
         event.setCancelled(true);
+    }
+
+    public void giveStuff(Player player, boolean clear) {
+        if(clear) {
+            player.getInventory().clear();
+        }
+
+        ItemStack stick = new ItemStack(Material.STICK);
+        stick.getItemMeta().displayName(Component.text("§a§lKnockback Stick"));
+        stick.addUnsafeEnchantment(Enchantment.KNOCKBACK, 1);
+
+        player.getInventory().addItem(stick,
+                new ItemStack(Material.WHITE_CONCRETE, 32),
+                new ItemStack(Material.ENDER_PEARL, 1),
+                new ItemStack(Material.COBWEB, 1)
+        );
+    }
+
+    public int getItemCount(Player player, Material material) {
+        int count = 0;
+        for(ItemStack item : player.getInventory().getContents()) {
+            if(item == null) continue;
+            if(item.getType() != material) continue;
+
+            count += item.getAmount();
+        }
+
+        return count;
     }
 
 }
