@@ -17,13 +17,11 @@ import mc.reflexed.user.data.UserRank;
 import mc.reflexed.util.ChatUtil;
 import mc.reflexed.util.MathUtil;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
-import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
 
 @Getter @Setter
@@ -140,6 +138,13 @@ public class User {
     public void onTeleport(Player player, PlayerTeleportEvent event) {
         if (event.getCause() != PlayerTeleportEvent.TeleportCause.ENDER_PEARL) return;
         if (deaths == enderPearlDeaths) return;
+        event.setCancelled(true);
+    }
+
+    @EventInfo
+    public void onDrop(Player player, PlayerDropItemEvent event) {
+        if (rank == UserRank.ADMIN) return;
+        if (player.getGameMode() == GameMode.CREATIVE) return;
         event.setCancelled(true);
     }
 
