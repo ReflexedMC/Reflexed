@@ -88,13 +88,13 @@ public class StatsCommand implements ICommandExecutor {
         double seconds = ((((double) playTime % 86400000) % 3600000) % 60000) / 1000;
 
         String playtimeString = "";
-        if (days > 0) {
+        if (days >= 1) {
             playtimeString = MathUtil.toFixed(days, 2) + "days";
-        } else if (hours > 0) {
+        } else if (hours >= 1) {
             playtimeString = MathUtil.toFixed(hours, 2) + "hours";
-        } else if (minutes > 0) {
+        } else if (minutes >= 1) {
             playtimeString = MathUtil.toFixed(minutes, 2) + "minutes";
-        } else if (seconds > 0) {
+        } else if (seconds >= 1) {
             playtimeString = MathUtil.toFixed(seconds, 2) + "seconds";
         }
 
