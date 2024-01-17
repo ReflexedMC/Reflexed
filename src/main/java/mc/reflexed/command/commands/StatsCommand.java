@@ -61,10 +61,11 @@ public class StatsCommand implements ICommandExecutor {
             double kills = section.getDouble("kills");
             double deaths = section.getDouble("deaths");
             double kdr = kills / deaths;
+            double playTime = section.getDouble("playTime");
 
             String rank = Objects.requireNonNull(UserRank.forName(Objects.requireNonNull(section.getString("rank")))).getPrefix();
 
-            sendStats(sender, player.getName(), kills, deaths, kdr, rank);
+            sendStats(sender, player.getName(), kills, deaths, kdr, rank, (int) playTime);
             return false;
         }
 
@@ -75,15 +76,21 @@ public class StatsCommand implements ICommandExecutor {
 
         User user = User.getUser(player.getPlayer());
 
-        sendStats(sender, sender.getName(), user.getKills(), user.getDeaths(), user.getKDR(), user.getRank().getPrefix());
+        sendStats(sender, sender.getName(), user.getKills(), user.getDeaths(), user.getKDR(), user.getRank().getPrefix(), user.getPlayTime());
         return false;
     }
 
-    private void sendStats(CommandSender sender, String name, double kills, double deaths, double kd, String rank) {
+    private void sendStats(CommandSender sender, String name, double kills, double deaths, double kd, String rank, int playTime) {
+//        format int in milliseconds to days, hours, minutes, seconds
+        int days = playTime / 86400000;
+        int hours = (playTime % 86400000) / 3600000;
+        int minutes = ((playTime % 86400000) % 3600000) / 60000;
+        int seconds = (((playTime % 86400000) % 3600000) % 60000) / 1000;
         sender.sendMessage(Component.text("§d§l" + name + "'s Stats"));
         sender.sendMessage(Component.text("§d• Kills: §f" + (int)kills));
         sender.sendMessage(Component.text("§d• Deaths: §f" + (int)deaths));
         sender.sendMessage(Component.text("§d• KDR: §f" + MathUtil.toFixed(kd, 2)));
+        sender.sendMessage(Component.text("§d• Playtime: §f" + days + "days " + hours + "hours " + minutes + "minutes " + seconds + "seconds"));
         sender.sendMessage(Component.text("§d• Rank: §f" + rank));
     }
 }
