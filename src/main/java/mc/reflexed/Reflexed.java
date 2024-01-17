@@ -10,8 +10,10 @@ import mc.reflexed.event.data.EventInfo;
 import mc.reflexed.map.GameMap;
 import mc.reflexed.user.User;
 import mc.reflexed.user.UserDatabase;
+import mc.reflexed.user.data.UserRank;
 import mc.reflexed.util.ChatUtil;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -41,7 +43,8 @@ public final class Reflexed extends JavaPlugin {
                 new TestCommand(), new GrantCommand(),
                 new SetSpawnCommand(), new SpawnCommand(),
                 new StatsCommand(), new GamemodeCommand(),
-                new FlyCommand()
+                new FlyCommand(), new ResetStatsCommand(),
+                new MapCommand()
         );
 
         eventManager.register(this);
@@ -67,6 +70,8 @@ public final class Reflexed extends JavaPlugin {
 
         List<User> users = new ArrayList<>(User.getUsers());
         users.forEach((user) -> {
+            user.setPlayTime(user.playTime());
+
             userDatabase.saveUser(user);
             User.getUsers().remove(user);
         });
@@ -75,11 +80,12 @@ public final class Reflexed extends JavaPlugin {
     @EventInfo
     public void onJoin(PlayerJoinEvent e) {
         User user = userDatabase.getUser(e.getPlayer());
-        user.setJoinTime((int) System.currentTimeMillis());
+        Player player = e.getPlayer();
+
+        gameMap.giveStuff(player, true);
+        player.teleport(gameMap.getDatabase().getSpawn());
 
         User.getUsers().add(user);
-
-        ChatUtil.broadcast(String.valueOf(User.getUsers().size()));
     }
 
 

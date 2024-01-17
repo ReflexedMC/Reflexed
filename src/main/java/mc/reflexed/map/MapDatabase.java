@@ -33,12 +33,24 @@ public class MapDatabase {
         reloadConfig();
     }
 
+    public void setMaxBuildHeight(int height) {
+        yamlConfiguration.set("max-build-height", height);
+
+        saveConfig();
+        reloadConfig();
+    }
+
     public Location getSpawn() {
         if(!yamlConfiguration.contains("spawn")) return null;
 
         return yamlConfiguration.getLocation("spawn");
     }
 
+    public int getMaxBuildHeight() {
+        if(!yamlConfiguration.contains("max-build-height")) return 0;
+
+        return yamlConfiguration.getInt("max-build-height");
+    }
 
     public void reloadConfig() {
         try {

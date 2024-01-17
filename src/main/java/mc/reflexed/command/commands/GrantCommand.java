@@ -1,13 +1,17 @@
 package mc.reflexed.command.commands;
 
+import mc.reflexed.Reflexed;
 import mc.reflexed.command.ICommandExecutor;
 import mc.reflexed.command.Permission;
 import mc.reflexed.command.data.CommandInfo;
 import mc.reflexed.user.User;
+import mc.reflexed.user.UserDatabase;
 import mc.reflexed.user.data.UserRank;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -23,20 +27,39 @@ public class GrantCommand implements ICommandExecutor {
             return false;
         }
 
-        Player target = Bukkit.getPlayer(args[0]);
+        OfflinePlayer target = Bukkit.getOfflinePlayer(args[0]);
+        UserDatabase database = Reflexed.get().getUserDatabase();
 
-        if(target == null) {
-            sender.sendMessage(Component.text("§cPlayer not found!"));
+        if(!target.hasPlayedBefore()) {
+            sender.sendMessage(Component.text("§cThat player has never played before."));
             return false;
         }
 
-        User user = User.getUsers().stream()
-                .filter(u -> u.getPlayer().getUniqueId().equals(target.getUniqueId()))
-                .findFirst()
-                .orElse(null);
+        if(target.getPlayer() != null) {
+            User user = User.getUsers().stream()
+                    .filter(u -> u.getPlayer().getUniqueId().equals(target.getUniqueId()))
+                    .findFirst()
+                    .orElse(null);
 
-        if(user == null) {
-            sender.sendMessage(Component.text("§cUser not found!"));
+            if (user == null) {
+                sender.sendMessage(Component.text("§cUser not found!"));
+                return false;
+            }
+
+            UserRank rank = getRank(args[1]);
+
+            if (rank == null) {
+                sender.sendMessage(Component.text("§cRank not found!"));
+                return false;
+            }
+
+            user.updateRank(rank);
+
+            if (rank == user.getRank()) {
+                sender.sendMessage(Component.text("§7Successfully updated rank for §d" + target.getName() + "§7 to " + rank.getPrefix() + "§7!"));
+                return false;
+            }
+
             return false;
         }
 
@@ -47,12 +70,20 @@ public class GrantCommand implements ICommandExecutor {
             return false;
         }
 
-        user.updateRank(rank);
-        
-        if(rank == user.getRank()) {
-            sender.sendMessage(Component.text("§aSuccessfully updated rank for " + target.getName() + " to " + rank.name().toLowerCase() + "!"));
+        ConfigurationSection section = Reflexed.get()
+                .getUserDatabase()
+                .getOfflineUser(target);
+
+        if(section == null) {
+            sender.sendMessage(Component.text("§cSomething went wrong."));
             return false;
         }
+
+        section.set("rank", rank.name());
+
+        database.saveConfig();
+        database.reloadConfig();
+        sender.sendMessage(Component.text("§7Successfully updated rank for §d" + target.getName() + "§7 to " + rank.getPrefix() + "§7!"));
         return false;
     }
 

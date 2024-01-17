@@ -4,6 +4,7 @@ import mc.reflexed.Reflexed;
 import mc.reflexed.command.ICommandExecutor;
 import mc.reflexed.command.Permission;
 import mc.reflexed.command.data.CommandInfo;
+import mc.reflexed.map.MapDatabase;
 import mc.reflexed.user.data.UserRank;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
@@ -21,10 +22,15 @@ public class SetSpawnCommand implements ICommandExecutor {
             return false;
         }
 
+        MapDatabase database = Reflexed.get().getGameMap().getDatabase();
+
         Location location = player.getLocation();
         location.getWorld().setSpawnLocation(location);
 
-        Reflexed.get().getGameMap().getDatabase().setSpawn(location);
+        database.setSpawn(location);
+        database.saveConfig();
+        database.reloadConfig();
+
         player.sendMessage(Component.text("§aSpawn set"));
         return false;
     }

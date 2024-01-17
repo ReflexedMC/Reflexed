@@ -5,6 +5,7 @@ import mc.reflexed.combat.CombatTag;
 import mc.reflexed.event.data.EventInfo;
 import mc.reflexed.map.block.ReflexedBlock;
 import mc.reflexed.map.block.ReflexedCobweb;
+import mc.reflexed.map.block.ReflexedConcrete;
 import mc.reflexed.user.User;
 import mc.reflexed.user.data.UserRank;
 import mc.reflexed.util.ChatUtil;
@@ -53,16 +54,20 @@ public class GameMap {
 
         if(player.getGameMode() == GameMode.CREATIVE) return;
 
+        MapDatabase database = Reflexed.get().getGameMap().getDatabase();
+
         boolean isWhiteConcrete = event.getBlock().getType() == Material.WHITE_CONCRETE;
         boolean isCobWeb = event.getBlock().getType() == Material.COBWEB;
+        boolean isAboveMaxHeight = event.getBlock().getLocation().getY() > database.getMaxBuildHeight();
 
-        if(isWhiteConcrete) {
-            this.blocks.add(ReflexedBlock.fromLocation(player, event.getBlock().getLocation()));
+        if(isAboveMaxHeight) {
+            event.setCancelled(true);
+            ChatUtil.message("§cYou cannot build there", player);
+            return;
         }
 
-        if(isCobWeb) {
-            this.blocks.add(new ReflexedCobweb(player, event.getBlock().getLocation()));
-        }
+        if(isWhiteConcrete) this.blocks.add(new ReflexedConcrete(player, event.getBlock().getLocation()));
+        if(isCobWeb) this.blocks.add(new ReflexedCobweb(player, event.getBlock().getLocation()));
     }
 
     @EventInfo
@@ -79,6 +84,14 @@ public class GameMap {
         if(event.getDamager().getType() != EntityType.PLAYER) return;
 
         CombatTag tag = CombatTag.getTag((Player) event.getEntity());
+        MapDatabase database = Reflexed.get().getGameMap().getDatabase();
+
+        if(event.getDamager().getLocation().getY() > database.getMaxBuildHeight()
+                || event.getEntity().getLocation().getY() > database.getMaxBuildHeight()) {
+            event.setCancelled(true);
+            return;
+        }
+
 
         if(tag != null) {
             tag.unregister();

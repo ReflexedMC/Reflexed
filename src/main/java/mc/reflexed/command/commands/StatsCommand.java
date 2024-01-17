@@ -15,17 +15,17 @@ import org.bukkit.entity.Player;
 
 import java.util.Objects;
 
-@CommandInfo(name = "stats", description = "View stats of a player or yourself")
+@CommandInfo(name = "stats", aliases = { "kills", "deaths", "playtime" }, description = "View stats of a player or yourself")
 public class StatsCommand implements ICommandExecutor {
 
     @Override
     public boolean execute(CommandSender sender, String[] args, String label) {
         if(args.length == 0 && (!(sender instanceof Player))) {
-            sender.sendMessage(Component.text("§c/stats <player>"));
+            sender.sendMessage(Component.text("§c/" + label + " <player>"));
             return false;
         }
 
-        OfflinePlayer player = (OfflinePlayer) sender;
+        OfflinePlayer player = sender instanceof Player ? (OfflinePlayer) sender : null;
 
         if(args.length >= 1) {
             player = Bukkit.getOfflinePlayer(args[0]);
@@ -45,7 +45,7 @@ public class StatsCommand implements ICommandExecutor {
                     return false;
                 }
 
-                sendStats(sender, player.getName(), user.getKills(), user.getDeaths(), user.getKDR(), user.getRank().getPrefix(), user.fetchPlayTime());
+                sendStats(sender, player.getName(), user.getKills(), user.getDeaths(), user.getKDR(), user.getRank().getPrefix(), user.playTime());
                 return false;
             }
 
@@ -76,26 +76,25 @@ public class StatsCommand implements ICommandExecutor {
 
         User user = User.getUser(player.getPlayer());
 
-        sendStats(sender, sender.getName(), user.getKills(), user.getDeaths(), user.getKDR(), user.getRank().getPrefix(), user.fetchPlayTime());
+        sendStats(sender, sender.getName(), user.getKills(), user.getDeaths(), user.getKDR(), user.getRank().getPrefix(), user.playTime());
         return false;
     }
 
-    private void sendStats(CommandSender sender, String name, double kills, double deaths, double kd, String rank, int playTime) {
-//        format int in milliseconds to days, hours, minutes, seconds
+    private void sendStats(CommandSender sender, String name, double kills, double deaths, double kd, String rank, long playTime) {
         double days = (double) playTime / 86400000;
         double hours = ((double) playTime % 86400000) / 3600000;
         double minutes = (((double) playTime % 86400000) % 3600000) / 60000;
         double seconds = ((((double) playTime % 86400000) % 3600000) % 60000) / 1000;
 
         String playtimeString = "";
-        if (days >= 1) {
-            playtimeString = MathUtil.toFixed(days, 2) + "days";
-        } else if (hours >= 1) {
-            playtimeString = MathUtil.toFixed(hours, 2) + "hours";
-        } else if (minutes >= 1) {
-            playtimeString = MathUtil.toFixed(minutes, 2) + "minutes";
-        } else if (seconds >= 1) {
-            playtimeString = MathUtil.toFixed(seconds, 2) + "seconds";
+
+        if (days >= 1) playtimeString = MathUtil.toFixed(days, 2) + " days";
+        else if (hours >= 1) playtimeString = MathUtil.toFixed(hours, 2) + " hours";
+        else if (minutes >= 1) playtimeString = MathUtil.toFixed(minutes, 2) + " minutes";
+        else if (seconds >= 1) playtimeString = MathUtil.toFixed(seconds, 2) + " seconds";
+
+        if(playtimeString.isEmpty()) {
+            playtimeString = "Has not connected before.";
         }
 
         sender.sendMessage(Component.text("§d§l" + name + "'s Stats"));

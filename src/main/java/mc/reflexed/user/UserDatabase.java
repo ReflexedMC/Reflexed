@@ -112,4 +112,12 @@ public class UserDatabase {
             e.printStackTrace();
         }
     }
+
+    public void saveConfig() {
+        try {
+            yamlConfiguration.save(file);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

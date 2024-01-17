@@ -15,17 +15,11 @@ public class ReflexedCobweb extends ReflexedBlock {
 
     @Override
     protected void init() {
-//        Bukkit.getScheduler().runTaskLater(Reflexed.get(), () -> this.remove(Reflexed.get().getGameMap()), 20L * 10);
-        // create a breaking animation
-        for(int i = 0; i < 10; i++) {
-            Bukkit.getScheduler().runTaskLater(Reflexed.get(), () -> this.setBlock(Material.COBWEB), i);
-            Bukkit.getScheduler().runTaskLater(Reflexed.get(), () -> this.setBlock(Material.AIR), i + 1);
-        }
+        Bukkit.getScheduler().runTaskLater(Reflexed.get(), () -> this.remove(Reflexed.get().getGameMap()), 20L * 10);
     }
 
     @Override
     public void remove(GameMap map) {
-        map.getBlocks().remove(this);
-        this.setBlock(Material.AIR);
+        super.remove(map);
     }
 }

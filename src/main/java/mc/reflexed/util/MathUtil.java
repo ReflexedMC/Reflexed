@@ -9,6 +9,10 @@ import java.math.RoundingMode;
 public class MathUtil extends Util {
 
     public static double toFixed(double d, int places) {
+        if(places < 0) throw new IllegalArgumentException();
+
+        if(Double.isInfinite(d) || Double.isNaN(d)) return d;
+
         return new BigDecimal(d).setScale(places, RoundingMode.HALF_EVEN).doubleValue();
     }
 

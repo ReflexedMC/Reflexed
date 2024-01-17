@@ -1,5 +1,6 @@
 package mc.reflexed.user;
 
+import java.sql.Ref;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,6 +8,7 @@ import io.papermc.paper.event.player.AsyncChatEvent;
 import lombok.Getter;
 import lombok.Setter;
 import mc.reflexed.Reflexed;
+import mc.reflexed.combat.CombatTag;
 import mc.reflexed.event.EventManager;
 import mc.reflexed.event.data.EventInfo;
 import mc.reflexed.user.data.Savable;
@@ -14,15 +16,11 @@ import mc.reflexed.user.data.Type;
 import mc.reflexed.user.data.UserRank;
 import mc.reflexed.util.ChatUtil;
 import mc.reflexed.util.MathUtil;
-import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
@@ -43,16 +41,18 @@ public class User {
     @Savable(Type.NUMBER)
     private double kills, deaths;
 
+    @Savable(Type.NUMBER)
+    private long playTime;
+
+    private long joinSince;
+
     private boolean pearlCooldown;
     private long pearlCooldownTime;
-
-    @Savable(Type.NUMBER)
-    private int playTime;
-    private int joinTime;
 
     public User(Player player, UserRank rank) {
         this.player = player;
         this.rank = rank;
+        this.joinSince = System.currentTimeMillis();
         eventManager.register(this, player);
     }
 
@@ -64,19 +64,30 @@ public class User {
         Reflexed.get().getUserDatabase().saveUser(this);
     }
 
-    public int fetchPlayTime() {
-        return (int) (playTime + (System.currentTimeMillis() - joinTime));
-    }
-
     @EventInfo
     public void onQuit(Player player, PlayerQuitEvent e) {
-        playTime = fetchPlayTime();
-        Reflexed.get().getUserDatabase().saveUser(this);
+        this.playTime = playTime();
 
+        CombatTag tag = CombatTag.getTag(player);
+
+        if(tag != null) {
+            User damager = User.getUser(tag.getDamager());
+            User user = User.getUser(tag.getDamager());
+
+            if(damager != null) {
+                damager.setKills(damager.getKills() + 1);
+                user.setDeaths(user.getDeaths() + 1);
+
+                ChatUtil.message(String.format("§aYou killed %s§a!", player.getName()), user.getPlayer());
+                ChatUtil.broadcast("§d" + player.getName() + " §7was killed by §d" + tag.getDamager().getName() + "§7!");
+            }
+
+            tag.unregister();
+        }
+
+        Reflexed.get().getUserDatabase().saveUser(this);
         eventManager.unregister(this);
         users.remove(this);
-
-        ChatUtil.broadcast(String.valueOf(User.getUsers().size()));
     }
 
     @EventInfo
@@ -121,12 +132,15 @@ public class User {
         }
     }
 
-
     public double getKDR() {
         if(deaths == 0) return kills;
         if(kills == 0) return 0.0;
 
         return kills / deaths;
+    }
+
+    public long playTime() {
+        return (System.currentTimeMillis() - joinSince) + playTime;
     }
 
     public static User getUser(Player target) {
