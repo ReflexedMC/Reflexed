@@ -75,13 +75,12 @@ public class GameMap {
         boolean allowBuild = Reflexed.get().getBuildMode().contains(player);
         boolean isBlock = isWhiteConcrete || isCobWeb;
 
-        if(!allowBuild && isBlock) {
+        if(!allowBuild && !isBlock) {
             event.setCancelled(true);
 
             User user = User.getUser(player);
 
-            if(user.getRank().getLevel() < UserRank.ADMIN.getLevel()) ChatUtil.message("§cYou cannot build here!", player);
-            else ChatUtil.message("§aYou must enable build to do this", player);
+            if(user.getRank().getLevel() >= UserRank.ADMIN.getLevel()) ChatUtil.message("§aYou must enable build to do this", player);
         }
     }
 
