@@ -135,7 +135,9 @@ public class GameMap {
     public void onBlockDestroy(BlockBreakEvent event) {
         UserRank rank = User.getUser(event.getPlayer()).getRank();
 
-        if(rank.getLevel() < UserRank.ADMIN.getLevel()) {
+        boolean allowBuild = Reflexed.get().getBuildMode().contains(event.getPlayer());
+
+        if(allowBuild) {
             event.setCancelled(true);
             return;
         }
