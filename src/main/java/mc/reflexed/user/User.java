@@ -34,6 +34,8 @@ public class User {
 
     private final Player player;
 
+    private UserSidebar sidebar;
+
     @Savable(Type.ENUM)
     private UserRank rank;
 
@@ -52,12 +54,16 @@ public class User {
     public User(Player player, UserRank rank) {
         this.player = player;
         this.rank = rank;
+        this.sidebar = new UserSidebar(this);
+        this.sidebar.update();
+
         this.joinSince = System.currentTimeMillis();
         eventManager.register(this, player);
     }
 
     public void updateRank(UserRank rank) {
         this.rank = rank;
+        this.sidebar.update();
 
         ChatUtil.message(String.format("§aYour rank has been updated to %s§a!", rank.getPrefix()), player);
 
@@ -72,11 +78,13 @@ public class User {
 
         if(tag != null) {
             User damager = User.getUser(tag.getDamager());
-            User user = User.getUser(tag.getDamager());
+            User user = User.getUser(tag.getPlayer());
 
             if(damager != null) {
                 damager.setKills(damager.getKills() + 1);
                 user.setDeaths(user.getDeaths() + 1);
+                user.getSidebar().update();
+                damager.getSidebar().update();
 
                 ChatUtil.message(String.format("§aYou killed %s§a!", player.getName()), user.getPlayer());
                 ChatUtil.broadcast("§d" + player.getName() + " §7was killed by §d" + tag.getDamager().getName() + "§7!");

@@ -89,6 +89,7 @@ public class UserDatabase {
                 }
             }
 
+            user.getSidebar().update();
             return user;
         } catch (YAMLException | IllegalAccessException e) {
             e.printStackTrace();

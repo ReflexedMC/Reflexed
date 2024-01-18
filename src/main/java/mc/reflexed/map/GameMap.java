@@ -29,6 +29,9 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
@@ -92,7 +95,6 @@ public class GameMap {
             return;
         }
 
-
         if(tag != null) {
             tag.unregister();
         }
@@ -104,6 +106,18 @@ public class GameMap {
 
         if(damager != null && user != null) {
             event.setDamage(0);
+        }
+    }
+
+    @EventInfo
+    public void onInventoryDrag(InventoryDragEvent event) {
+        for(int i : event.getInventorySlots()) {
+            if ((event.getView().getSlotType(i) == InventoryType.SlotType.CRAFTING || event.getView().getSlotType(i) == InventoryType.SlotType.FUEL)){
+                event.setCancelled(true);
+
+                Player player = (Player) event.getWhoClicked();
+                player.updateInventory();
+            }
         }
     }
 
@@ -135,19 +149,21 @@ public class GameMap {
     public void onPlayerMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
 
-        if(event.getTo().getY() <= 35) {
+        if(event.getTo().getY() <= 35 && player.getGameMode() != GameMode.CREATIVE) {
             player.teleport(Reflexed.get().getGameMap().getDatabase().getSpawn());
 
             CombatTag tag = CombatTag.getTag(player);
 
             User user = User.getUser(player);
             user.setDeaths(user.getDeaths() + 1);
+            user.getSidebar().update();
 
             if(tag != null) {
                 tag.unregister();
 
                 User killer = User.getUser(tag.getDamager());
                 killer.setKills(killer.getKills() + 1);
+                killer.getSidebar().update();
 
                 ChatUtil.broadcast("§d" + player.getName() + " §7was killed by §d" + tag.getDamager().getName() + "§7!");
                 ChatUtil.message("§cYou were killed by §d" + tag.getDamager().getName() + "§c!", player);
