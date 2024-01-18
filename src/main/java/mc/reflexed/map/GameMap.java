@@ -79,7 +79,7 @@ public class GameMap {
 
             User user = User.getUser(player);
 
-            if(user.getRank().getLevel() >= UserRank.ADMIN.getLevel()) ChatUtil.message("§aYou must enable build to do this", player);
+            if(user.getRank().getLevel() >= UserRank.ADMIN.getLevel()) ChatUtil.message("§cYou must enable build to do this", player);
         }
     }
 
