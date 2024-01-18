@@ -75,7 +75,7 @@ public class GameMap {
         boolean allowBuild = Reflexed.get().getBuildMode().contains(player);
         boolean isBlock = isWhiteConcrete || isCobWeb;
 
-        if(!allowBuild && !isBlock) {
+        if(!allowBuild && !isWhiteConcrete && !isCobWeb) {
             event.setCancelled(true);
 
             User user = User.getUser(player);
