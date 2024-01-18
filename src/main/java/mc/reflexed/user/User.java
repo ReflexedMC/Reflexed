@@ -76,6 +76,8 @@ public class User {
 
         CombatTag tag = CombatTag.getTag(player);
 
+        Reflexed.get().getBuildMode().remove(player);
+
         if(tag != null) {
             User damager = User.getUser(tag.getDamager());
             User user = User.getUser(tag.getPlayer());

@@ -24,6 +24,8 @@ import java.util.List;
 @Getter
 public final class Reflexed extends JavaPlugin {
 
+    private final List<Player> buildMode = new ArrayList<>();
+
     private final CommandManager commandManager;
     private final EventManager eventManager;
 
@@ -44,7 +46,7 @@ public final class Reflexed extends JavaPlugin {
                 new SetSpawnCommand(), new SpawnCommand(),
                 new StatsCommand(), new GamemodeCommand(),
                 new FlyCommand(), new ResetStatsCommand(),
-                new MapCommand()
+                new MapCommand(), new BuildCommand()
         );
 
         eventManager.register(this);
