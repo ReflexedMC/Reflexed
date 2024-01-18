@@ -1,6 +1,7 @@
 package mc.reflexed.command.commands;
 
 import mc.reflexed.Reflexed;
+import mc.reflexed.combat.CombatTag;
 import mc.reflexed.command.ICommandExecutor;
 import mc.reflexed.command.data.CommandInfo;
 import net.kyori.adventure.text.Component;
@@ -20,6 +21,12 @@ public class SpawnCommand implements ICommandExecutor {
         }
 
         Location spawn = Reflexed.get().getGameMap().getDatabase().getSpawn();
+        boolean isCombatTagged = CombatTag.getTag(player) != null;
+
+        if(isCombatTagged) {
+            player.sendMessage(Component.text("§cYou cannot teleport to spawn while combat tagged"));
+            return false;
+        }
 
         if(spawn == null) {
             player.sendMessage(Component.text("§cSpawn has not been set"));
