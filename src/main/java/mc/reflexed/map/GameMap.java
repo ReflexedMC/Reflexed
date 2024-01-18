@@ -137,7 +137,7 @@ public class GameMap {
 
         boolean allowBuild = Reflexed.get().getBuildMode().contains(event.getPlayer());
 
-        if(allowBuild) {
+        if(!allowBuild) {
             event.setCancelled(true);
             return;
         }
