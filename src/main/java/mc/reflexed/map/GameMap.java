@@ -139,6 +139,8 @@ public class GameMap {
 
         if(!allowBuild) {
             event.setCancelled(true);
+
+            if(rank.getLevel() >= UserRank.ADMIN.getLevel()) ChatUtil.message("§cYou must enable build to do this", event.getPlayer());
             return;
         }
 
