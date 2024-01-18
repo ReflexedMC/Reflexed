@@ -54,26 +54,25 @@ public class GameMap {
     @EventInfo
     public void onBlockPlace(BlockPlaceEvent event) {
         Player player = event.getPlayer();
-
-        if(player.getGameMode() == GameMode.CREATIVE) return;
-
         MapDatabase database = Reflexed.get().getGameMap().getDatabase();
 
         boolean isWhiteConcrete = event.getBlock().getType() == Material.WHITE_CONCRETE;
         boolean isCobWeb = event.getBlock().getType() == Material.COBWEB;
         boolean isAboveMaxHeight = event.getBlock().getLocation().getY() > database.getMaxBuildHeight();
 
-        if(isAboveMaxHeight) {
-            event.setCancelled(true);
-            ChatUtil.message("§cYou cannot build there", player);
-            return;
+        if(player.getGameMode() != GameMode.CREATIVE) {
+
+            if (isAboveMaxHeight) {
+                event.setCancelled(true);
+                ChatUtil.message("§cYou cannot build there", player);
+                return;
+            }
+
+            if (isWhiteConcrete) this.blocks.add(new ReflexedConcrete(player, event.getBlock().getLocation()));
+            if (isCobWeb) this.blocks.add(new ReflexedCobweb(player, event.getBlock().getLocation()));
         }
 
-        if(isWhiteConcrete) this.blocks.add(new ReflexedConcrete(player, event.getBlock().getLocation()));
-        if(isCobWeb) this.blocks.add(new ReflexedCobweb(player, event.getBlock().getLocation()));
-
         boolean allowBuild = Reflexed.get().getBuildMode().contains(player);
-        boolean isBlock = isWhiteConcrete || isCobWeb;
 
         if(!allowBuild && !isWhiteConcrete && !isCobWeb) {
             event.setCancelled(true);
