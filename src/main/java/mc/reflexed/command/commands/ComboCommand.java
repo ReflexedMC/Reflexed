@@ -15,6 +15,7 @@ public class ComboCommand implements ICommandExecutor {
     @Override
     public boolean execute(CommandSender commandSender, String[] strings, String s) {
         Reflexed.get().setComboMode(!Reflexed.get().isComboMode());
+
         if (!Reflexed.get().isComboMode()) {
 //            loop through all players and reset hurt time
             Bukkit.getOnlinePlayers().forEach(player -> {

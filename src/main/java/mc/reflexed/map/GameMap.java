@@ -118,13 +118,15 @@ public class GameMap {
 
         if(damager != null && user != null) {
             event.setDamage(0);
-            if (Reflexed.get().isComboMode() && event.getDamager() instanceof Player && event.getEntity() instanceof Player) {
+
+            if (Reflexed.get().isComboMode()) {
                 new BukkitRunnable(){
                     public void run(){
                         ((Player) event.getEntity()).setNoDamageTicks(0);
                     }
                 }.runTaskLater(Reflexed.get(), 1);
             }
+
         }
     }
 
