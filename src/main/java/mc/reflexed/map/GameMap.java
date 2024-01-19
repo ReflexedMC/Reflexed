@@ -35,6 +35,7 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 
 @Getter
 public class GameMap {
@@ -117,8 +118,14 @@ public class GameMap {
         if(damager != null && user != null) {
             event.setDamage(0);
         } else if (Reflexed.get().isComboMode()) {
-            ((Player) event.getEntity()).setNoDamageTicks(0);
-            ((Player) event.getEntity()).setMaximumNoDamageTicks(0);
+            new BukkitRunnable(){
+                public void run(){
+                    if(!event.isCancelled()){
+                        ((Player) event.getEntity()).setNoDamageTicks(0);
+                        ((Player) event.getEntity()).setMaximumNoDamageTicks(0);
+                    }
+                }
+            }.runTaskLater(Reflexed.get(), 1);
         }
     }
 
