@@ -53,8 +53,6 @@ public final class Reflexed extends JavaPlugin {
                 new ComboCommand()
         );
 
-        eventManager.register(this);
-
         if(!getDataFolder().exists() && !getDataFolder().mkdirs()) {
             getLogger().severe("Failed to create data folder!");
             Bukkit.getPluginManager().disablePlugin(this);
@@ -68,6 +66,8 @@ public final class Reflexed extends JavaPlugin {
             User user = userDatabase.getUser(player);
             User.getUsers().add(user);
         });
+
+        eventManager.register(this);
     }
 
     @Override

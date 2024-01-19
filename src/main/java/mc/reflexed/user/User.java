@@ -1,7 +1,7 @@
 package mc.reflexed.user;
 
-import java.sql.Ref;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
@@ -41,6 +41,7 @@ public class User {
 
     @Savable(Type.NUMBER)
     private double kills, deaths;
+    private double killStreak;
 
     @Savable(Type.NUMBER)
     private long playTime;
@@ -85,6 +86,14 @@ public class User {
             if(damager != null) {
                 damager.setKills(damager.getKills() + 1);
                 user.setDeaths(user.getDeaths() + 1);
+
+                damager.setKillStreak(damager.getKillStreak() + 1);
+                user.setKillStreak(0);
+
+                if(damager.getKillStreak() % 5 == 0) {
+                    ChatUtil.broadcast(String.format("§l§d%s §7is on a §7kill-streak §dof §d%s!", damager.getPlayer().getName(), damager.getKillStreak()));
+                }
+
                 user.getSidebar().update();
                 damager.getSidebar().update();
 
