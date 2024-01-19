@@ -195,7 +195,6 @@ public class GameMap {
             }
 
             giveStuff(player, true);
-            user.setDeaths(user.getDeaths() + 1);
             ChatUtil.broadcast("§d" + player.getName() + " §7died!");
             player.setHealth(20);
             player.setFoodLevel(20);
