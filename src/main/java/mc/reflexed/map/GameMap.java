@@ -188,6 +188,13 @@ public class GameMap {
 
                 User killer = User.getUser(tag.getDamager());
                 killer.setKills(killer.getKills() + 1);
+                killer.setKillStreak(killer.getKillStreak() + 1);
+
+                if(killer.getKillStreak() % 5 == 0) {
+                    ChatUtil.broadcast("§l§d" + killer.getPlayer().getName() + " §7is on a §7kill-streak §dof §d" + killer.getKillStreak() + "§7!");
+                }
+
+                user.setKillStreak(0);
                 killer.getSidebar().update();
 
                 ChatUtil.broadcast("§d" + player.getName() + " §7was killed by §d" + tag.getDamager().getName() + "§7!");
