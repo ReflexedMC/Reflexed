@@ -30,7 +30,7 @@ public class StatsCommand implements ICommandExecutor {
         if(args.length >= 1) {
             player = Bukkit.getOfflinePlayer(args[0]);
 
-            if(!player.hasPlayedBefore()) {
+            if(!player.hasPlayedBefore() && player.getPlayer() == null) {
                 sender.sendMessage(Component.text("§cThat player has never played before."));
                 return false;
             }

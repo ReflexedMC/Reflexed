@@ -30,7 +30,7 @@ public class GrantCommand implements ICommandExecutor {
         OfflinePlayer target = Bukkit.getOfflinePlayer(args[0]);
         UserDatabase database = Reflexed.get().getUserDatabase();
 
-        if(!target.hasPlayedBefore()) {
+        if(!target.hasPlayedBefore() & target.getPlayer() == null) {
             sender.sendMessage(Component.text("§cThat player has never played before."));
             return false;
         }
