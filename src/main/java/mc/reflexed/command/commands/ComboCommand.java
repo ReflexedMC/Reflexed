@@ -21,7 +21,7 @@ public class ComboCommand implements ICommandExecutor {
                 player.setNoDamageTicks(10);
             });
         }
-        ChatUtil.broadcast("§aCombo mode has been " + (Reflexed.get().isComboMode() ? "enabled" : "disabled") + "!");
+        ChatUtil.broadcast("§aCombo mode has been §d" + (Reflexed.get().isComboMode() ? "enabled" : "disabled") + "§a!");
         return false;
     }
 }
