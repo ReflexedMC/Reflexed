@@ -11,6 +11,7 @@ import mc.reflexed.user.data.UserRank;
 import mc.reflexed.util.ChatUtil;
 import mc.reflexed.util.MathUtil;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -122,6 +123,7 @@ public class GameMap {
                 public void run(){
                     ((Player) event.getEntity()).setNoDamageTicks(0);
                     ((Player) event.getEntity()).setMaximumNoDamageTicks(0);
+                    ChatUtil.broadcast(String.valueOf(1));
                 }
             }.runTaskLater(Reflexed.get(), 1);
         }
