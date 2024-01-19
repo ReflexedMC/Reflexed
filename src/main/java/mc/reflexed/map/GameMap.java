@@ -120,10 +120,8 @@ public class GameMap {
         } else if (Reflexed.get().isComboMode()) {
             new BukkitRunnable(){
                 public void run(){
-                    if(!event.isCancelled()){
-                        ((Player) event.getEntity()).setNoDamageTicks(0);
-                        ((Player) event.getEntity()).setMaximumNoDamageTicks(0);
-                    }
+                    ((Player) event.getEntity()).setNoDamageTicks(0);
+                    ((Player) event.getEntity()).setMaximumNoDamageTicks(0);
                 }
             }.runTaskLater(Reflexed.get(), 1);
         }
