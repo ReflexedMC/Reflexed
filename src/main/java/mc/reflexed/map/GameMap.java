@@ -116,6 +116,9 @@ public class GameMap {
 
         if(damager != null && user != null) {
             event.setDamage(0);
+        } else if (Reflexed.get().isComboMode()) {
+            ((Player) event.getEntity()).setNoDamageTicks(0);
+            ((Player) event.getEntity()).setMaximumNoDamageTicks(0);
         }
     }
 
