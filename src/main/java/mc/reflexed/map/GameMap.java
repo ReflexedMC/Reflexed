@@ -192,7 +192,7 @@ public class GameMap {
                 killer.setKillStreak(killer.getKillStreak() + 1);
 
                 if(killer.getKillStreak() % 5 == 0) {
-                    ChatUtil.broadcast("§d§l" + killer.getPlayer().getName() + " §7§lis on a §7kill-streak §d§lof §d§l" + (int)killer.getKillStreak() + "§7§l!");
+                    ChatUtil.broadcast("§d§l" + killer.getPlayer().getName() + " §a§lis on a §akill-streak §a§lof §d§l" + (int)killer.getKillStreak() + "§a§l!");
                 }
 
                 user.setKillStreak(0);

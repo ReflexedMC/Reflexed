@@ -91,7 +91,7 @@ public class User {
                 user.setKillStreak(0);
 
                 if(damager.getKillStreak() % 5 == 0) {
-                    ChatUtil.broadcast("§d§l" + damager.getPlayer().getName() + " §7§lis on a §7kill-streak §d§lof §d§l" + (int)damager.getKillStreak() + "§7§l!");
+                    ChatUtil.broadcast("§d§l" + damager.getPlayer().getName() + " §a§lis on a §akill-streak §a§lof §d§l" + (int)damager.getKillStreak() + "§a§l!");
                 }
 
                 user.getSidebar().update();
