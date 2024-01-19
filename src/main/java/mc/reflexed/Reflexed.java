@@ -1,6 +1,7 @@
 package mc.reflexed;
 
 import lombok.Getter;
+import lombok.Setter;
 import mc.reflexed.combat.CombatTag;
 import mc.reflexed.command.CommandManager;
 import mc.reflexed.command.ReflexedCommand;
@@ -25,6 +26,8 @@ import java.util.List;
 public final class Reflexed extends JavaPlugin {
 
     private final List<Player> buildMode = new ArrayList<>();
+    @Setter
+    private boolean comboMode = false;
 
     private final CommandManager commandManager;
     private final EventManager eventManager;
@@ -46,7 +49,8 @@ public final class Reflexed extends JavaPlugin {
                 new SetSpawnCommand(), new SpawnCommand(),
                 new StatsCommand(), new GamemodeCommand(),
                 new FlyCommand(), new ResetStatsCommand(),
-                new MapCommand(), new BuildCommand()
+                new MapCommand(), new BuildCommand(),
+                new ComboCommand()
         );
 
         eventManager.register(this);

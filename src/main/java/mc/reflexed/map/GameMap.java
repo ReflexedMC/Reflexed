@@ -11,6 +11,7 @@ import mc.reflexed.user.data.UserRank;
 import mc.reflexed.util.ChatUtil;
 import mc.reflexed.util.MathUtil;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -35,6 +36,7 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 
 @Getter
 public class GameMap {
@@ -116,6 +118,13 @@ public class GameMap {
 
         if(damager != null && user != null) {
             event.setDamage(0);
+            if (Reflexed.get().isComboMode() && event.getDamager() instanceof Player && event.getEntity() instanceof Player) {
+                new BukkitRunnable(){
+                    public void run(){
+                        ((Player) event.getEntity()).setNoDamageTicks(0);
+                    }
+                }.runTaskLater(Reflexed.get(), 1);
+            }
         }
     }
 
