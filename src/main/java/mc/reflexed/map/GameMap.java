@@ -118,14 +118,14 @@ public class GameMap {
 
         if(damager != null && user != null) {
             event.setDamage(0);
-        } else if (Reflexed.get().isComboMode()) {
-            new BukkitRunnable(){
-                public void run(){
-                    ((Player) event.getEntity()).setNoDamageTicks(0);
-                    ((Player) event.getEntity()).setMaximumNoDamageTicks(0);
-                    ChatUtil.broadcast(String.valueOf(1));
-                }
-            }.runTaskLater(Reflexed.get(), 1);
+            if (Reflexed.get().isComboMode()) {
+                new BukkitRunnable(){
+                    public void run(){
+                        ((Player) event.getEntity()).setNoDamageTicks(0);
+                        ((Player) event.getEntity()).setMaximumNoDamageTicks(0);
+                    }
+                }.runTaskLater(Reflexed.get(), 1);
+            }
         }
     }
 

@@ -14,7 +14,7 @@ import org.bukkit.command.CommandSender;
 public class ComboCommand implements ICommandExecutor {
     @Override
     public boolean execute(CommandSender commandSender, String[] strings, String s) {
-        Reflexed.get().setComboMode(true);
+        Reflexed.get().setComboMode(!Reflexed.get().isComboMode());
         ChatUtil.broadcast("§aCombo mode has been " + (Reflexed.get().isComboMode() ? "enabled" : "disabled") + "!");
         return false;
     }
