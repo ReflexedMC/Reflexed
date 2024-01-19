@@ -19,7 +19,6 @@ public class ComboCommand implements ICommandExecutor {
 //            loop through all players and reset hurt time
             Bukkit.getOnlinePlayers().forEach(player -> {
                 player.setNoDamageTicks(10);
-                player.setMaximumNoDamageTicks(10);
             });
         }
         ChatUtil.broadcast("§aCombo mode has been " + (Reflexed.get().isComboMode() ? "enabled" : "disabled") + "!");
