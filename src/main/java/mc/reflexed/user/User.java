@@ -41,7 +41,7 @@ public class User {
 
     @Savable(Type.NUMBER)
     private double kills, deaths, level = 1, xp;
-    private double killStreak, maxXP = 500;
+    private double killStreak;
 
     @Savable(Type.NUMBER)
     private long playTime;
@@ -178,10 +178,10 @@ public class User {
     public void setXp(double xp) {
         this.xp = xp;
 
+        double maxXP = getMaxXP(level);
         if(this.xp >= maxXP) {
             this.xp = this.xp - maxXP;
             this.level += 1;
-            this.maxXP += 500;
 
             ChatUtil.message("§aYou have leveled up!", player);
             ChatUtil.message("§aYou are now level §d" + (int)level + "§a!", player);
