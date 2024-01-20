@@ -1,5 +1,6 @@
 package mc.reflexed.user;
 
+import lombok.Getter;
 import mc.reflexed.user.data.Savable;
 import mc.reflexed.user.data.Type;
 import mc.reflexed.user.data.UserRank;
@@ -17,6 +18,7 @@ import java.util.UUID;
 
 public class UserDatabase {
 
+    @Getter
     private final YamlConfiguration yamlConfiguration;
 
     private final File file;

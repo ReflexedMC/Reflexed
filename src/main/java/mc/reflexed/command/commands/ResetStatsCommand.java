@@ -12,6 +12,8 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 
+import java.sql.Ref;
+
 @CommandInfo(name = "resetStats", description = "Reset a player's stats")
 @Permission(UserRank.ADMIN)
 public class ResetStatsCommand implements ICommandExecutor {
@@ -24,48 +26,52 @@ public class ResetStatsCommand implements ICommandExecutor {
         }
 
         OfflinePlayer player = Bukkit.getOfflinePlayer(args[0]);
-        UserDatabase userDatabase = Reflexed.get().getUserDatabase();
 
-        if(!player.hasPlayedBefore()) {
-            sender.sendMessage("§cThat player has never played before.");
+        if(!player.hasPlayedBefore() && !player.isOnline()) {
+            sender.sendMessage("§cPlayer not found");
             return false;
         }
 
-        if(player.getPlayer() != null) {
+        if(player.isOnline()) {
             User user = User.getUser(player.getPlayer());
-
-            if(user == null) {
-                sender.sendMessage("§cSomething went wrong.");
-                return false;
-            }
 
             user.setKills(0);
             user.setDeaths(0);
-            user.setPlayTime(0);
+            user.setKillStreak(0);
+            user.getSidebar().update();
 
-            userDatabase.saveConfig();
-            userDatabase.reloadConfig();
-            sender.sendMessage("§7You have reset the stats of §d" + player.getName() + "§7.");
+            sender.sendMessage("§aSuccessfully reset stats for " + player.getName());
+            user.getPlayer().sendMessage("§aYour stats have been reset");
+            return true;
+        }
+
+        UserDatabase database = Reflexed.get().getUserDatabase();
+
+        if(database == null) {
+            sender.sendMessage("§cUser database is not loaded!");
             return false;
         }
 
-        // the player is offline
-        ConfigurationSection section = Reflexed.get()
-                .getUserDatabase()
-                .getOfflineUser(player);
+        if(!database.getYamlConfiguration().contains(player.getUniqueId().toString())) {
+            sender.sendMessage("§cPlayer not found");
+            return false;
+        }
+
+        ConfigurationSection section = database
+                .getYamlConfiguration()
+                .getConfigurationSection(player.getUniqueId().toString());
 
         if(section == null) {
-            sender.sendMessage("§7Something went wrong.");
+            sender.sendMessage("§cSomething went wrong while looking for player " + player.getName());
             return false;
         }
 
         section.set("kills", 0);
         section.set("deaths", 0);
-        section.set("playTime", 0);
+        section.set("killStreak", 0);
+        database.saveConfig();
 
-        userDatabase.saveConfig();
-        userDatabase.reloadConfig();
-        sender.sendMessage("§7You have reset the stats of §d" + player.getName() + "§7.");
+        sender.sendMessage("§aSuccessfully reset stats for " + player.getName());
         return false;
     }
 
