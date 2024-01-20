@@ -191,7 +191,10 @@ public class GameMap {
                 killer.setKills(killer.getKills() + 1);
                 killer.setKillStreak(killer.getKillStreak() + 1);
 
+                killer.setXp(killer.getXp() + 100);
+
                 if(killer.getKillStreak() % 5 == 0) {
+                    killer.setXp(killer.getXp() + (200 * (int)(killer.getKillStreak() % 5)));
                     ChatUtil.broadcast("§d§l" + killer.getPlayer().getName() + " §a§lis on a §akill-streak §a§lof §d§l" + (int)killer.getKillStreak() + "§a§l!");
                 }
 

@@ -40,8 +40,8 @@ public class User {
     private UserRank rank;
 
     @Savable(Type.NUMBER)
-    private double kills, deaths;
-    private double killStreak;
+    private double kills, deaths, level = 1, xp;
+    private double killStreak, maxXP = 500;
 
     @Savable(Type.NUMBER)
     private long playTime;
@@ -114,7 +114,7 @@ public class User {
         e.setCancelled(true);
 
         String rankAndPlayer = String.format("%s %s", rank.getPrefix(), player.getName());
-        String message = String.format("%s§7:§r %s", rankAndPlayer, PlainTextComponentSerializer.plainText().serialize(e.message()));
+        String message = String.format("§7[☆%s] %s§7:§r %s", rank.getLevel(), rankAndPlayer, PlainTextComponentSerializer.plainText().serialize(e.message()));
 
         ChatUtil.broadcast(message);
     }
@@ -172,6 +172,19 @@ public class User {
         if(kills == 0) return 0.0;
 
         return kills / deaths;
+    }
+
+    public void setXp(double xp) {
+        this.xp = xp;
+
+        if(this.xp >= maxXP) {
+            this.xp = this.xp - maxXP;
+            this.level += 1;
+            this.maxXP += 500;
+
+            ChatUtil.message("§aYou have leveled up!", player);
+            ChatUtil.message("§aYou are now level §d" + (int)level + "§a!", player);
+        }
     }
 
     public long playTime() {
