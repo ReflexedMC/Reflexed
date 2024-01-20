@@ -104,7 +104,7 @@ public class StatsCommand implements ICommandExecutor {
         sender.sendMessage(Component.text("§d• Deaths: §f" + (int)deaths));
         sender.sendMessage(Component.text("§d• KDR: §f" + MathUtil.toFixed(kd, 2)));
         sender.sendMessage(Component.text("§d• Level: §f" + (int)level));
-        sender.sendMessage(Component.text("§d• XP: §f" + (int)xp + "§7/§f" + (int)User.getMaxXP(level)));
+        sender.sendMessage(Component.text("§d   • XP: §f" + (int)xp + "§7/§f" + (int)User.getMaxXP(level)));
         sender.sendMessage(Component.text("§d• Playtime: §f" + playtimeString));
         sender.sendMessage(Component.text("§d• Rank: §f" + rank));
     }
