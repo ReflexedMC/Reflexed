@@ -21,10 +21,11 @@ public record UserSidebar(User user) {
 
         String[] board = {
                 "§7---------------",
-                "§7Kills§7:§r " + (int)user.getKills(),
-                "§7Deaths§7:§r " + (int)user.getDeaths(),
-                "§7Level§7:§r " + (int)user.getLevel(),
-                "§6  • XP§7:§r " + (int)user.getXp() + "§7/§r" + (int)User.getMaxXP(user.getLevel()),
+                "§7Level:§r §6☆" + (int)user.getLevel(),
+                "§7  • XP:§6 " + (int)user.getXp() + "§7/§6" + (int)User.getMaxXP(user.getLevel()),
+                "§r",
+                "§7Kills:§r " + (int)user.getKills(),
+                "§7Deaths:§r " + (int)user.getDeaths(),
                 "§7KDR§7:§r " + MathUtil.toFixed(user.getKDR(), 2),
                 "§7---------------",
         };
