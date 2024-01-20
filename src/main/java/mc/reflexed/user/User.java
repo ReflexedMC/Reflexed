@@ -19,6 +19,7 @@ import mc.reflexed.util.MathUtil;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.*;
@@ -184,8 +185,8 @@ public class User {
             this.level += 1;
 
             ChatUtil.message("§aYou are now level §d" + (int)level + "§a!", player);
-
             player.sendTitle("§aLevel Up!", String.format("§7You are now level §d%s", (int)level), 10, 40, 10);
+            player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
         }
     }
 
