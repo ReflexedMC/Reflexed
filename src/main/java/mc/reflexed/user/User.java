@@ -193,7 +193,7 @@ public class User {
     }
 
     public static double getMaxXP(double level) {
-        return 500 + (level * 500);
+        return 500 + (level == 1 ? 0 : (level - 1) * 500);
     }
 
     public static User getUser(Player target) {
