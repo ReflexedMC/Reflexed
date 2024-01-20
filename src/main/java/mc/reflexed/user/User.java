@@ -183,8 +183,9 @@ public class User {
             this.xp = this.xp - maxXP;
             this.level += 1;
 
-            ChatUtil.message("§aYou have leveled up!", player);
             ChatUtil.message("§aYou are now level §d" + (int)level + "§a!", player);
+
+            player.sendTitle("§aLevel Up!", String.format("§7You are not level §d%s", (int)level), 10, 40, 10);
         }
     }
 
