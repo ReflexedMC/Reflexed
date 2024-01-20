@@ -45,7 +45,7 @@ public class StatsCommand implements ICommandExecutor {
                     return false;
                 }
 
-                sendStats(sender, player.getName(), user.getKills(), user.getDeaths(), user.getKDR(), user.getLevel(), user.getRank().getPrefix(), user.playTime());
+                sendStats(sender, player.getName(), user.getKills(), user.getDeaths(), user.getKDR(), user.getLevel(), user.getXp(), user.getRank().getPrefix(), user.playTime());
                 return false;
             }
 
@@ -63,10 +63,11 @@ public class StatsCommand implements ICommandExecutor {
             double kdr = kills == 0 || deaths == 0 ? 0 : (kills / deaths);
             double playTime = section.contains("playTime") ? section.getDouble("playTime") : 0;
             double level = section.contains("level") ? section.getDouble("level") : 1;
+            double xp = section.contains("xp") ? section.getDouble("xp") : 0;
 
             String rank = Objects.requireNonNull(UserRank.forName(Objects.requireNonNull(section.getString("rank")))).getPrefix();
 
-            sendStats(sender, player.getName(), kills, deaths, kdr, level, rank, (int) playTime);
+            sendStats(sender, player.getName(), kills, deaths, kdr, level, xp, rank, (int) playTime);
             return false;
         }
 
@@ -77,11 +78,11 @@ public class StatsCommand implements ICommandExecutor {
 
         User user = User.getUser(player.getPlayer());
 
-        sendStats(sender, sender.getName(), user.getKills(), user.getDeaths(), user.getKDR(), user.getLevel(), user.getRank().getPrefix(), user.playTime());
+        sendStats(sender, sender.getName(), user.getKills(), user.getDeaths(), user.getKDR(), user.getLevel(), user.getXp(), user.getRank().getPrefix(), user.playTime());
         return false;
     }
 
-    private void sendStats(CommandSender sender, String name, double kills, double deaths, double kd, double level, String rank, long playTime) {
+    private void sendStats(CommandSender sender, String name, double kills, double deaths, double kd, double level, double xp, String rank, long playTime) {
         double days = (double) playTime / 86400000;
         double hours = ((double) playTime % 86400000) / 3600000;
         double minutes = (((double) playTime % 86400000) % 3600000) / 60000;
@@ -102,7 +103,7 @@ public class StatsCommand implements ICommandExecutor {
         sender.sendMessage(Component.text("§d• Kills: §f" + (int)kills));
         sender.sendMessage(Component.text("§d• Deaths: §f" + (int)deaths));
         sender.sendMessage(Component.text("§d• KDR: §f" + MathUtil.toFixed(kd, 2)));
-        sender.sendMessage(Component.text("§d• Level: §f" + level));
+        sender.sendMessage(Component.text("§d• Level: §f" + (int)level));
         sender.sendMessage(Component.text("§d• Playtime: §f" + playtimeString));
         sender.sendMessage(Component.text("§d• Rank: §f" + rank));
     }
