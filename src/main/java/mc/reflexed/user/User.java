@@ -185,7 +185,7 @@ public class User {
 
             ChatUtil.message("§aYou are now level §d" + (int)level + "§a!", player);
 
-            player.sendTitle("§aLevel Up!", String.format("§7You are not level §d%s", (int)level), 10, 40, 10);
+            player.sendTitle("§aLevel Up!", String.format("§7You are now level §d%s", (int)level), 10, 40, 10);
         }
     }
 
