@@ -11,7 +11,7 @@ import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-@CommandInfo(name = "setSpawn", description = "Sets the spawn point of the world")
+@CommandInfo(name = "setspawn", description = "Sets the spawn point of the world")
 @Permission(UserRank.ADMIN)
 public class SetSpawnCommand implements ICommandExecutor {
 
