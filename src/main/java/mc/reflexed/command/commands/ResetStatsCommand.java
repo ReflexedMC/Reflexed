@@ -14,7 +14,7 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import java.sql.Ref;
 
-@CommandInfo(name = "resetStats", description = "Reset a player's stats")
+@CommandInfo(name = "resetstats", description = "Reset a player's stats")
 @Permission(UserRank.ADMIN)
 public class ResetStatsCommand implements ICommandExecutor {
 
@@ -38,6 +38,9 @@ public class ResetStatsCommand implements ICommandExecutor {
             user.setKills(0);
             user.setDeaths(0);
             user.setKillStreak(0);
+            user.setLevel(0);
+            user.setXp(0);
+
             user.getSidebar().update();
 
             sender.sendMessage("§aSuccessfully reset stats for " + player.getName());
@@ -69,6 +72,9 @@ public class ResetStatsCommand implements ICommandExecutor {
         section.set("kills", 0);
         section.set("deaths", 0);
         section.set("killStreak", 0);
+        section.set("level", 0);
+        section.set("xp", 0);
+
         database.saveConfig();
 
         sender.sendMessage("§aSuccessfully reset stats for " + player.getName());
