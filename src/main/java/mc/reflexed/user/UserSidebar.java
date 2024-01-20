@@ -1,31 +1,47 @@
 package mc.reflexed.user;
 
+import mc.reflexed.util.ChatUtil;
 import mc.reflexed.util.MathUtil;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.scoreboard.*;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public record UserSidebar(User user) {
 
     public void update() {
-        Scoreboard scoreboard = user.getPlayer().getServer().getScoreboardManager().getNewScoreboard();
-        Objective objective = scoreboard.registerNewObjective("sidebar", Criteria.create("dummy"), Component.text("§d§lReflexed"));
+        user.getPlayer().getScoreboard().clearSlot(DisplaySlot.SIDEBAR);
 
-        String[] sidebar = {
-                "                  ",
-                "§7Rank: §f" + user.getRank().getPrefix(),
-                "§7Kills: §f" + (int)(user.getKills()),
-                "§7Deaths: §f" + (int)(user.getDeaths()),
-                "§7K/D: §f" + MathUtil.toFixed(user.getKDR(), 2),
-                "                  "
+        Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
+        Objective objective = scoreboard.registerNewObjective("Reflexed", Criteria.create("dummy"), Component.text("§d§lReflexed"));
+        objective.setDisplaySlot(DisplaySlot.SIDEBAR);
+
+        String[] board = {
+                "§7---------------",
+                "§7Kills§7:§r " + (int)user.getKills(),
+                "§7Deaths§7:§r " + (int)user.getDeaths(),
+                "§7Level§7:§r " + (int)user.getLevel(),
+                "§6  • XP§7:§r " + (int)user.getXp() + "§7/§r" + (int)User.getMaxXP(user.getLevel()),
+                "§7KDR§7:§r " + MathUtil.toFixed(user.getKDR(), 2),
+                "§7---------------",
         };
 
-        for(int i = 0; i < sidebar.length; i++) {
-            objective.setDisplaySlot(DisplaySlot.SIDEBAR);
+        List<String> boardList = new ArrayList<>(List.of(board));
+        for(int i = 0; i < boardList.size(); i++) {
+            String line = boardList.get(i);
 
-            Score score = objective.getScore(sidebar[i]);
-            score.setScore(i + 1);
+            while (boardList.indexOf(line) != boardList.lastIndexOf(line)) {
+                boardList.set(i, line = line + "§r");
+            }
         }
 
+        for(int i = 0; i < boardList.size(); i++) {
+            Score score = objective.getScore(boardList.get(i));
+            score.setScore(boardList.size() - i);
+        }
 
         user.getPlayer().setScoreboard(scoreboard);
     }
