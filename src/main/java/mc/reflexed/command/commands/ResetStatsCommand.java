@@ -43,8 +43,11 @@ public class ResetStatsCommand implements ICommandExecutor {
 
             user.getSidebar().update();
 
-            sender.sendMessage("§aSuccessfully reset stats for " + player.getName());
-            user.getPlayer().sendMessage("§aYour stats have been reset");
+            sender.sendMessage("§aSuccessfully reset stats for §d" + player.getName());
+
+            if(user.getPlayer() != sender) {
+                user.getPlayer().sendMessage("§aYour stats have been reset");
+            }
             return true;
         }
 
