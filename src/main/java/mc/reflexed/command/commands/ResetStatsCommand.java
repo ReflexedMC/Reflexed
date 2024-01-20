@@ -38,7 +38,7 @@ public class ResetStatsCommand implements ICommandExecutor {
             user.setKills(0);
             user.setDeaths(0);
             user.setKillStreak(0);
-            user.setLevel(0);
+            user.setLevel(1);
             user.setXp(0);
 
             user.getSidebar().update();
@@ -75,7 +75,7 @@ public class ResetStatsCommand implements ICommandExecutor {
         section.set("kills", 0);
         section.set("deaths", 0);
         section.set("killStreak", 0);
-        section.set("level", 0);
+        section.set("level", 1);
         section.set("xp", 0);
 
         database.saveConfig();
