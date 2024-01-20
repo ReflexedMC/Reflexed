@@ -21,8 +21,8 @@ public record UserSidebar(User user) {
 
         String[] board = {
                 "§7---------------",
-                "§7Level:§r §6☆ " + (int)user.getLevel(),
-                "§7  • XP: " + (int)user.getXp() + "§7/" + (int)User.getMaxXP(user.getLevel()),
+                "§7Level:§r §6☆§r " + (int)user.getLevel(),
+                "§6  • XP:§r " + (int)user.getXp() + "§7/§r" + (int)User.getMaxXP(user.getLevel()),
                 "§r",
                 "§7Kills:§r " + (int)user.getKills(),
                 "§7Deaths:§r " + (int)user.getDeaths(),
