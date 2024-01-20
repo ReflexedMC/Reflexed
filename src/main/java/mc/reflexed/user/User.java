@@ -192,6 +192,10 @@ public class User {
         return (System.currentTimeMillis() - joinSince) + playTime;
     }
 
+    public static double getMaxXP(double level) {
+        return 500 + (level * 500);
+    }
+
     public static User getUser(Player target) {
         return users.stream().filter(user -> user.getPlayer().equals(target)).findFirst().orElse(null);
     }
