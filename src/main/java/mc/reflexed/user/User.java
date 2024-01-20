@@ -114,7 +114,7 @@ public class User {
         e.setCancelled(true);
 
         String rankAndPlayer = String.format("%s %s", rank.getPrefix(), player.getName());
-        String message = String.format("§7[§6☆ %s§7] %s§7:§r %s", level, rankAndPlayer, PlainTextComponentSerializer.plainText().serialize(e.message()));
+        String message = String.format("§7[§6☆ %s§7] %s§7:§r %s", (int)level, rankAndPlayer, PlainTextComponentSerializer.plainText().serialize(e.message()));
 
         ChatUtil.broadcast(message);
     }
