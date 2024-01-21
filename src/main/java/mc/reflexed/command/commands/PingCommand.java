@@ -6,7 +6,6 @@ import mc.reflexed.util.ChatUtil;
 import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 
 @CommandInfo(name = "ping", description = "Get ping of a player")
 public class PingCommand implements ICommandExecutor {

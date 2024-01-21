@@ -15,26 +15,16 @@ import org.bukkit.event.player.PlayerMoveEvent;
 )
 public class GroundSpoofA extends Check {
 
-    private boolean onGround, lastOnGround;
-    private boolean realOnGround, realLastOnGround;
+    private int onGroundTick, realOnGroundTick;
 
     @EventInfo
     @SuppressWarnings("deprecation")
     public void onMove(Player player, PlayerMoveEvent e) {
-        if((onGround && lastOnGround && !realOnGround && !realLastOnGround)) {
-            flag("onGround=true",
-                    "lastOnGround=true",
-                    "realOnGround=false",
-                    "realLastOnGround=false");
+        if(realOnGroundTick == 0 && onGroundTick > 3) {
+            flag("onGroundTick=" + onGroundTick, "realOnGroundTick=" + realOnGroundTick);
         }
 
-        this.lastOnGround = this.onGround;
-        this.onGround = player.isOnGround();
-
-        this.realLastOnGround = this.realOnGround;
-        this.realOnGround = ACUtil.isOnGround(player);
-
-        this.realLastOnGround = this.realOnGround;
-        this.realOnGround = ACUtil.isOnGround(player);
+        this.realOnGroundTick += (ACUtil.isOnGround(player)) ? 1 : 0;
+        this.onGroundTick += (player.isOnGround()) ? 1 : 0;
     }
 }
