@@ -8,6 +8,7 @@ import mc.reflexed.ac.check.Check;
 import mc.reflexed.ac.check.data.CheckInfo;
 import mc.reflexed.ac.check.data.CheckType;
 import mc.reflexed.event.data.EventInfo;
+import mc.reflexed.util.ChatUtil;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -55,6 +56,8 @@ public class AutoClickerA extends Check {
                 min = cps.getClicks();
             }
         }
+
+        ChatUtil.broadcast("max=" + max + " " + "min=" + min);
 
         if(max - min > 3) {
             flag("max=" + max, "min=" + min);
