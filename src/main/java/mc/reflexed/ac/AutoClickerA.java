@@ -52,7 +52,7 @@ public class AutoClickerA extends Check {
                 max = cps.getClicks();
             }
 
-            if(cps.getClicks() < min) {
+            if(cps.getClicks() <= min) {
                 min = cps.getClicks();
             }
         }
