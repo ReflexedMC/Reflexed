@@ -20,7 +20,7 @@ public class GroundSpoofA extends Check {
     @EventInfo
     @SuppressWarnings("deprecation")
     public void onMove(Player player, PlayerMoveEvent e) {
-        if(realOnGroundTick == 0 && onGroundTick > 3) {
+        if(realOnGroundTick == 0 && onGroundTick > 5) {
             flag("onGroundTick=" + onGroundTick, "realOnGroundTick=" + realOnGroundTick);
         }
 
