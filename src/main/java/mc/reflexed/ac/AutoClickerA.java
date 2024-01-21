@@ -65,7 +65,7 @@ public class AutoClickerA extends Check {
 
         if(max == -1 || min == -1) return;
 
-        if((max - min) > 5) {
+        if((max - min) > 5 && max > 25) {
             flag("max=" + max,
                     "min=" + min,
                     "countSame=" + countSame
