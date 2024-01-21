@@ -64,7 +64,7 @@ public class AutoClickerA extends Check {
 
         if(max == -1 || min == -1) return;
 
-        ChatUtil.broadcast("Max: " + max + " Min: " + min + " Count: " + countSame + " diff: " + (max - min));
+        ChatUtil.broadcast("User: " +  user.getPlayer().getName() + ", Max: " + max + ", Min: " + min + ", Count: " + countSame + ", diff: " + (max - min));
     }
 
     @Getter @Setter
