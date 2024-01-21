@@ -56,9 +56,8 @@ public final class Reflexed extends JavaPlugin {
         );
 
         CheckManager.addChecks(
-                MotionA.class,
-                StepA.class,
-                GroundSpoofA.class
+                MotionA.class, StepA.class,
+                GroundSpoofA.class, AutoClickerA.class
         );
 
         if(!getDataFolder().exists() && !getDataFolder().mkdirs()) {
