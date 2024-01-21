@@ -25,8 +25,9 @@ public class PingCommand implements ICommandExecutor {
             return false;
         }
 
-        if(sender != target) {
+        if(sender == target) {
             ChatUtil.message(String.format("§7Your ping is §d%sms", target.getPing()), (Player) sender);
+            return false;
         }
 
         ChatUtil.message(String.format("§d%s's §7ping is §d%sms", target.getName(), target.getPing()), (Player) sender);
