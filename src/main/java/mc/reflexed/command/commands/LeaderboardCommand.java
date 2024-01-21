@@ -24,12 +24,12 @@ public class LeaderboardCommand implements ICommandExecutor {
     @Override
     public boolean execute(CommandSender sender, String[] args, String label) {
         if(args.length == 0) {
-            sender.sendMessage(Component.text("§c/" + label + " <kills/level> <page>"));
+            sender.sendMessage(Component.text("§c/" + label + " <kills/level/kdr> <page>"));
             return false;
         }
 
-        if(!args[0].equalsIgnoreCase("kills") && !args[0].equalsIgnoreCase("level")) {
-            sender.sendMessage(Component.text("§c/" + label + " <kills/level> <page>"));
+        if(!args[0].equalsIgnoreCase("kills") && !args[0].equalsIgnoreCase("level") && !args[0].equalsIgnoreCase("kdr")) {
+            sender.sendMessage(Component.text("§c/" + label + " <kills/level/kdr> <page>"));
             return false;
         }
 
@@ -39,7 +39,7 @@ public class LeaderboardCommand implements ICommandExecutor {
         }
 
         if(!args[1].matches("[0-9]+")) {
-            sender.sendMessage(Component.text("§c/" + label + " <kills/level> <page>"));
+            sender.sendMessage(Component.text("§c/" + label + " <kills/level/kdr> <page>"));
             return false;
         }
 
