@@ -24,7 +24,7 @@ public class GroundSpoofA extends Check {
             flag("onGroundTick=" + onGroundTick, "realOnGroundTick=" + realOnGroundTick);
         }
 
-        this.realOnGroundTick += (ACUtil.isOnGround(player)) ? 1 : 0;
-        this.onGroundTick += (player.isOnGround()) ? 1 : 0;
+        this.realOnGroundTick = (ACUtil.isOnGround(player)) ? this.realOnGroundTick + 1 : 0;
+        this.onGroundTick = (player.isOnGround()) ? this.onGroundTick + 1 : 0;
     }
 }
