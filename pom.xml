@@ -85,7 +85,7 @@
         <dependency>
             <groupId>com.github.ReflexedMC</groupId>
             <artifactId>ReflexedAC</artifactId>
-            <version>b601ddee18</version>
+            <version>17f8e3dd66</version>
         </dependency>
     </dependencies>
 </project>

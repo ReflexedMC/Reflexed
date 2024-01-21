@@ -17,7 +17,7 @@ import java.util.List;
 @CheckInfo(
         name = "Auto Clicker",
         description = "Checks if the player is using an auto clicker",
-        type = CheckType.EXPERIMENTAL
+        maxVl = 100
 )
 public class AutoClickerA extends Check {
 

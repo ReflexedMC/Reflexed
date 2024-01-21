@@ -13,6 +13,7 @@ import mc.reflexed.map.GameMap;
 import mc.reflexed.user.User;
 import mc.reflexed.user.UserDatabase;
 import mc.reflexed.user.data.UserRank;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -75,7 +76,17 @@ public final class Reflexed extends JavaPlugin {
         });
 
         eventManager.register(this);
-        ac = new ReflexedAC(eventManager, player -> User.getUser(player).getRank().getLevel() >= UserRank.MODERATOR.getLevel());
+        ac = new ReflexedAC(eventManager, new AntiCheatConsumer() {
+            @Override
+            public void punish(Player player) {
+                player.kick(Component.text("§7You have been kicked for §dcheating!"));
+            }
+
+            @Override
+            public boolean accept(Player player) {
+                return User.getUser(player).getRank().getLevel() >= UserRank.MODERATOR.getLevel();
+            }
+        });
     }
 
     @Override
