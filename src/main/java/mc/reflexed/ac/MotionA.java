@@ -22,7 +22,9 @@ public class MotionA extends Check {
 
     @EventInfo
     public void onMove(Player player, PlayerMoveEvent e) {
-        if(player.getAllowFlight() || ACUtil.isColliding(player)) {
+        if(player.getAllowFlight()
+                || ACUtil.isColliding(player)
+                || player.getNoDamageTicks() > 0) {
             this.lastDist = 0;
             this.lastOnGround = true;
             return;
