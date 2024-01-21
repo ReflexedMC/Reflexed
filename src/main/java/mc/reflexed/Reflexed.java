@@ -2,6 +2,7 @@ package mc.reflexed;
 
 import lombok.Getter;
 import lombok.Setter;
+import mc.reflexed.ac.ReflexedAC;
 import mc.reflexed.combat.CombatTag;
 import mc.reflexed.command.CommandManager;
 import mc.reflexed.command.ReflexedCommand;
@@ -19,6 +20,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.sql.Ref;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +36,7 @@ public final class Reflexed extends JavaPlugin {
 
     private UserDatabase userDatabase;
     private GameMap gameMap;
+    private ReflexedAC ac;
 
     public Reflexed() {
         this.commandManager = new CommandManager(this);
@@ -42,6 +45,7 @@ public final class Reflexed extends JavaPlugin {
 
     @Override
     public void onEnable() {
+
         eventManager.onEnable();
 
         ReflexedCommand.createCommands(
@@ -68,6 +72,7 @@ public final class Reflexed extends JavaPlugin {
         });
 
         eventManager.register(this);
+        ac = ReflexedAC.INSTANCE;
     }
 
     @Override

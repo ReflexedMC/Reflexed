@@ -82,5 +82,10 @@
             <artifactId>ReflexedBase</artifactId>
             <version>b74f10ca0f</version>
         </dependency>
+        <dependency>
+            <groupId>com.github.ReflexedMC</groupId>
+            <artifactId>ReflexedAC</artifactId>
+            <version>2fdb417c58</version>
+        </dependency>
     </dependencies>
 </project>
