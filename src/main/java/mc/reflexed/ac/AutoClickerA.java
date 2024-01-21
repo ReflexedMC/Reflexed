@@ -65,11 +65,11 @@ public class AutoClickerA extends Check {
 
         if(max == -1 || min == -1) return;
 
-        boolean hasVariation = countSame < 2;
-        boolean isAutoClicker = max - min > 5;
-
-        if(isAutoClicker || !hasVariation) {
-            flag("max=" + max, "min=" + min, "countSame=" + countSame);
+        if((max - min) > 5) {
+            flag("max=" + max,
+                    "min=" + min,
+                    "countSame=" + countSame
+            );
         }
     }
 
