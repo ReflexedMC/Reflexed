@@ -27,7 +27,7 @@ public class AutoClickerA extends Check {
 
     @EventInfo
     public void onSwing(Player player, PlayerArmSwingEvent event) {
-        if(cps.size() > 20) {
+        if(cps.size() >= 4) {
             cps.remove(0);
         }
 
