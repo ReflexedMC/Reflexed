@@ -108,6 +108,8 @@ public class LeaderboardCommand implements ICommandExecutor {
             OfflinePlayer offlinePlayer = Reflexed.get().getServer().getOfflinePlayer(UUID.fromString(entry.getKey()));
             if(!offlinePlayer.isOnline() && !offlinePlayer.hasPlayedBefore()) continue;
 
+            if(builder.toString().contains(Objects.requireNonNull(offlinePlayer.getName()))) continue; // this happens when a server is switched to offline mode
+
             builder.append(String.format(" §7• §d%s§7. %s - §d%s§r", i + 1, sender.getName().equalsIgnoreCase(offlinePlayer.getName()) ? "§6" + offlinePlayer.getName()  : offlinePlayer.getName(), entry.getValue().intValue())).append("\n");
             i++;
         }
