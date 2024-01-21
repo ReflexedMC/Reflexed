@@ -25,7 +25,7 @@ public class StepA extends Check {
         double lastMotionY = this.lastMotionY;
         this.lastMotionY = motionY;
 
-        if(lastMotionY > 0.6 && motionY > 0.6 && ACUtil.areBlocksAround(player)) {
+        if(lastMotionY > 0.6 && ACUtil.areBlocksAround(player)) {
             flag("motionY=" + motionY);
         }
     }
