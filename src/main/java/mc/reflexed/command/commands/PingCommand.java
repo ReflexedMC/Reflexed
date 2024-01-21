@@ -26,11 +26,11 @@ public class PingCommand implements ICommandExecutor {
         }
 
         if(sender == target) {
-            ChatUtil.message(String.format("§7Your ping is §d%sms", target.getPing()), (Player) sender);
+            ChatUtil.message(String.format("§7Your ping is §d%s§7ms", target.getPing()), (Player) sender);
             return false;
         }
 
-        ChatUtil.message(String.format("§d%s's §7ping is §d%sms", target.getName(), target.getPing()), (Player) sender);
+        ChatUtil.message(String.format("§d%s§7's §7ping is §d%s§7ms", target.getName(), target.getPing()), (Player) sender);
         return false;
     }
 }
