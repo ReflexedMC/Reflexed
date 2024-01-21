@@ -2,6 +2,7 @@ package mc.reflexed;
 
 import lombok.Getter;
 import lombok.Setter;
+import mc.reflexed.ac.AutoClickerA;
 import mc.reflexed.ac.GroundSpoofA;
 import mc.reflexed.ac.MotionA;
 import mc.reflexed.ac.ReflexedAC;
@@ -58,6 +59,7 @@ public final class Reflexed extends JavaPlugin {
 
         CheckManager.addChecks(
                 MotionA.class,
+                AutoClickerA.class
                 GroundSpoofA.class
         );
 
