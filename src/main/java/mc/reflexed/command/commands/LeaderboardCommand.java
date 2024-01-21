@@ -49,7 +49,7 @@ public class LeaderboardCommand implements ICommandExecutor {
 
     @Override
     public String[] tabComplete(CommandSender sender, String[] args, String label) {
-        if(args.length == 0) {
+        if(args.length == 1) {
             return new String[] { "kills", "level" };
         }
 
