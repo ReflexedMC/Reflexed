@@ -1,5 +1,6 @@
 package mc.reflexed.ac;
 
+import io.papermc.paper.event.player.PlayerArmSwingEvent;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,7 +26,7 @@ public class AutoClickerA extends Check {
     private CPS current;
 
     @EventInfo
-    public void onSwing(Player player, Player event) {
+    public void onSwing(Player player, PlayerArmSwingEvent event) {
         if(cps.size() >= 4) {
             cps.remove(0);
         }
