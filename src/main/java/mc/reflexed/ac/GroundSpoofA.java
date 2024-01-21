@@ -21,10 +21,7 @@ public class GroundSpoofA extends Check {
     @EventInfo
     @SuppressWarnings("deprecation")
     public void onMove(Player player, PlayerMoveEvent e) {
-        if(areBlocksAround(player)) {
-            ChatUtil.message("Blocks around", player);
-            return;
-        }
+        if(areBlocksAround(player)) return;
 
         if(realOnGroundTick == 0 && onGroundTick > 5) {
             flag("onGroundTick=" + onGroundTick, "realOnGroundTick=" + realOnGroundTick);
