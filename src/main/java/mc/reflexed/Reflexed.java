@@ -2,11 +2,10 @@ package mc.reflexed;
 
 import lombok.Getter;
 import lombok.Setter;
+import mc.reflexed.ac.GroundSpoofA;
 import mc.reflexed.ac.MotionA;
 import mc.reflexed.ac.ReflexedAC;
-import mc.reflexed.ac.check.Check;
 import mc.reflexed.ac.check.CheckManager;
-import mc.reflexed.combat.CombatTag;
 import mc.reflexed.command.CommandManager;
 import mc.reflexed.command.ReflexedCommand;
 import mc.reflexed.command.commands.*;
@@ -16,14 +15,12 @@ import mc.reflexed.map.GameMap;
 import mc.reflexed.user.User;
 import mc.reflexed.user.UserDatabase;
 import mc.reflexed.user.data.UserRank;
-import mc.reflexed.util.ChatUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.sql.Ref;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,7 +57,8 @@ public final class Reflexed extends JavaPlugin {
         );
 
         CheckManager.addChecks(
-                MotionA.class
+                MotionA.class,
+                GroundSpoofA.class
         );
 
         if(!getDataFolder().exists() && !getDataFolder().mkdirs()) {

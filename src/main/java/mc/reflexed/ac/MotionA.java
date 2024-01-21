@@ -10,7 +10,11 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerMoveEvent;
 
-@CheckInfo(name = "Motion", description = "Checks for Bhop", type = CheckType.EXPERIMENTAL)
+@CheckInfo(
+        name = "Motion",
+        description = "Checks for Bhop",
+        type = CheckType.EXPERIMENTAL
+)
 public class MotionA extends Check {
 
     private double lastDist, lastLastDist;
