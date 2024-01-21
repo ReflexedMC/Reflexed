@@ -24,12 +24,12 @@ public class LeaderboardCommand implements ICommandExecutor {
     @Override
     public boolean execute(CommandSender sender, String[] args, String label) {
         if(args.length == 0) {
-            sender.sendMessage(Component.text("§c/" + label + " <kills/level/kdr> <page>"));
+            sender.sendMessage(Component.text("§c/" + label + " <kills/level> <page>"));
             return false;
         }
 
         if(!args[0].equalsIgnoreCase("kills") && !args[0].equalsIgnoreCase("level") && !args[0].equalsIgnoreCase("kdr")) {
-            sender.sendMessage(Component.text("§c/" + label + " <kills/level/kdr> <page>"));
+            sender.sendMessage(Component.text("§c/" + label + " <kills/level> <page>"));
             return false;
         }
 
@@ -39,7 +39,7 @@ public class LeaderboardCommand implements ICommandExecutor {
         }
 
         if(!args[1].matches("[0-9]+")) {
-            sender.sendMessage(Component.text("§c/" + label + " <kills/level/kdr> <page>"));
+            sender.sendMessage(Component.text("§c/" + label + " <kills/level> <page>"));
             return false;
         }
 
@@ -50,7 +50,7 @@ public class LeaderboardCommand implements ICommandExecutor {
     @Override
     public String[] tabComplete(CommandSender sender, String[] args, String label) {
         if(args.length == 1) {
-            return new String[] { "kills", "level", "kdr" };
+            return new String[] { "kills", "level" };
         }
 
         return new String[0];
@@ -78,24 +78,6 @@ public class LeaderboardCommand implements ICommandExecutor {
                     setLeaderboard(leaderboard, key, "level");
                 }
             }
-            case "kdr" -> {
-                for(String key : config.getKeys(false)) {
-                    if(!config.isConfigurationSection(key)) continue;
-
-                    ConfigurationSection section = userDatabase.getOfflineUser(UUID.fromString(key));
-                    if(section == null) continue;
-
-                    double kills = section.contains("kills") ? section.getDouble("kills") : 0;
-                    double deaths = section.contains("deaths") ? section.getDouble("deaths") : 0;
-                    double kdr = kills == 0 || deaths == 0 ? 0 : (kills / deaths);
-
-                    leaderboard.put(key, kdr);
-                }
-            }
-        }
-
-        if (type.equalsIgnoreCase("kdr")) {
-            type = "KDR";
         }
 
         Map<String, Double> sorted = leaderboard.entrySet().stream().sorted((o1, o2) -> o2.getValue().compareTo(o1.getValue()))
