@@ -57,8 +57,8 @@ public class AutoClickerA extends Check {
 
         if(max == -1 || min == -1) return;
 
-        if(max - min < 3) {
-            ChatUtil.message("You would have been flagged for Auto Clicker max=" + max + " " + "min=" + min, player);
+        if(max > 25 && (max - min) < 3) {
+            ChatUtil.message("max=" + max + ", min=" + min + ", diff=" + (max - min), player);
         }
     }
 
