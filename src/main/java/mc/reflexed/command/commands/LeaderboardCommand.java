@@ -100,6 +100,8 @@ public class LeaderboardCommand implements ICommandExecutor {
                 continue;
             }
 
+            if(entry.getValue() == 0) continue; // why would I even add a player with 0 kills or level 0 to the leaderboard??
+
             if(!found) {
                 found = true;
                 builder.append("\n");
