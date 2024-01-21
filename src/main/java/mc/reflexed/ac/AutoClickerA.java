@@ -1,6 +1,5 @@
 package mc.reflexed.ac;
 
-import io.papermc.paper.event.player.PlayerArmSwingEvent;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,7 +25,7 @@ public class AutoClickerA extends Check {
     private CPS current;
 
     @EventInfo
-    public void onSwing(Player player, PlayerArmSwingEvent event) {
+    public void onSwing(Player player, Player event) {
         if(cps.size() >= 4) {
             cps.remove(0);
         }
@@ -45,6 +44,7 @@ public class AutoClickerA extends Check {
         }
 
         int max = -1, min = -1;
+        int countSame = 0, lastMax = -1, lastMin = -1;
         for(CPS cps : cps) {
             if(max == -1 || cps.getClicks() > max) {
                 max = cps.getClicks();
@@ -53,13 +53,18 @@ public class AutoClickerA extends Check {
             if(min == -1 || cps.getClicks() < min) {
                 min = cps.getClicks();
             }
+
+            if(lastMax == max || lastMin == min) {
+                countSame++;
+            }
+
+            lastMax = max;
+            lastMin = min;
         }
 
         if(max == -1 || min == -1) return;
 
-        if(max > 25 && (max - min) < 3) {
-            ChatUtil.message("max=" + max + ", min=" + min + ", diff=" + (max - min), player);
-        }
+        ChatUtil.broadcast("Max: " + max + " Min: " + min + " Count: " + countSame + " diff: " + (max - min));
     }
 
     @Getter @Setter

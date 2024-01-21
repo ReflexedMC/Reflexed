@@ -59,7 +59,6 @@ public final class Reflexed extends JavaPlugin {
 
         CheckManager.addChecks(
                 MotionA.class,
-                AutoClickerA.class,
                 GroundSpoofA.class
         );
 
