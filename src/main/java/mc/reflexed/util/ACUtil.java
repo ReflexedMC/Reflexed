@@ -18,6 +18,17 @@ public class ACUtil extends Util {
         return false;
     }
 
+    public boolean areBlocksAround(Player player) {
+        for(int x = -1; x < 2; x++) {
+            for(int z = -1; z < 2; z++) {
+                if(player.getWorld().getBlockAt(player.getLocation().add(x, -1, z)).getType().isSolid()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public static boolean isColliding(Player player) {
         for(double x = -0.3; x <= 0.3; x += 0.3) {
             for(double y = -0.3; y <= 1.8; y += 0.3) {

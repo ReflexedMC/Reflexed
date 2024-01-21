@@ -21,7 +21,7 @@ public class GroundSpoofA extends Check {
     @EventInfo
     @SuppressWarnings("deprecation")
     public void onMove(Player player, PlayerMoveEvent e) {
-        if(areBlocksAround(player)) return;
+        if(ACUtil.areBlocksAround(player)) return;
 
         if(realOnGroundTick == 0 && onGroundTick > 5) {
             flag("onGroundTick=" + onGroundTick, "realOnGroundTick=" + realOnGroundTick);
@@ -31,14 +31,4 @@ public class GroundSpoofA extends Check {
         this.onGroundTick = (player.isOnGround()) ? this.onGroundTick + 1 : 0;
     }
 
-    public boolean areBlocksAround(Player player) {
-        for(int x = -1; x < 2; x++) {
-            for(int z = -1; z < 2; z++) {
-                if(player.getWorld().getBlockAt(player.getLocation().add(x, -1, z)).getType().isSolid()) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
 }
