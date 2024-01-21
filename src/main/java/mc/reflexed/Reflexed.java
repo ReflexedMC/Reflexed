@@ -2,7 +2,10 @@ package mc.reflexed;
 
 import lombok.Getter;
 import lombok.Setter;
+import mc.reflexed.ac.MotionA;
 import mc.reflexed.ac.ReflexedAC;
+import mc.reflexed.ac.check.Check;
+import mc.reflexed.ac.check.CheckManager;
 import mc.reflexed.combat.CombatTag;
 import mc.reflexed.command.CommandManager;
 import mc.reflexed.command.ReflexedCommand;
@@ -45,7 +48,6 @@ public final class Reflexed extends JavaPlugin {
 
     @Override
     public void onEnable() {
-
         eventManager.onEnable();
 
         ReflexedCommand.createCommands(
@@ -55,6 +57,10 @@ public final class Reflexed extends JavaPlugin {
                 new FlyCommand(), new ResetStatsCommand(),
                 new MapCommand(), new BuildCommand(),
                 new ComboCommand()
+        );
+
+        CheckManager.addChecks(
+                MotionA.class
         );
 
         if(!getDataFolder().exists() && !getDataFolder().mkdirs()) {
@@ -72,7 +78,7 @@ public final class Reflexed extends JavaPlugin {
         });
 
         eventManager.register(this);
-        ac = ReflexedAC.INSTANCE;
+        ac = new ReflexedAC(eventManager, player -> User.getUser(player).getRank().getLevel() >= UserRank.MODERATOR.getLevel());
     }
 
     @Override
