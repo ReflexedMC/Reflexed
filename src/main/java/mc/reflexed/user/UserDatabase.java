@@ -108,6 +108,14 @@ public class UserDatabase {
         return yamlConfiguration.getConfigurationSection(player.getUniqueId().toString());
     }
 
+    public ConfigurationSection getOfflineUser(UUID uuid) {
+        reloadConfig();
+
+        if(!yamlConfiguration.contains(uuid.toString())) return null;
+
+        return yamlConfiguration.getConfigurationSection(uuid.toString());
+    }
+
     public void reloadConfig() {
         try {
             yamlConfiguration.load(file);

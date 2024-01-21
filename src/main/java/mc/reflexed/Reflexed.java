@@ -51,7 +51,8 @@ public final class Reflexed extends JavaPlugin {
                 new StatsCommand(), new GamemodeCommand(),
                 new FlyCommand(), new ResetStatsCommand(),
                 new MapCommand(), new BuildCommand(),
-                new ComboCommand(), new PingCommand()
+                new ComboCommand(), new PingCommand(),
+                new LeaderboardCommand()
         );
 
         CheckManager.addChecks(
