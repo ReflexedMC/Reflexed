@@ -47,6 +47,15 @@ public class LeaderboardCommand implements ICommandExecutor {
         return false;
     }
 
+    @Override
+    public String[] tabComplete(CommandSender sender, String[] args, String label) {
+        if(args.length == 0) {
+            return new String[] { "kills", "level" };
+        }
+
+        return new String[0];
+    }
+
     public void sendLeaderboard(CommandSender sender, String[] args, int page) {
         UserDatabase userDatabase = Reflexed.get().getUserDatabase();
         YamlConfiguration config = userDatabase.getYamlConfiguration();
@@ -99,7 +108,7 @@ public class LeaderboardCommand implements ICommandExecutor {
             OfflinePlayer offlinePlayer = Reflexed.get().getServer().getOfflinePlayer(UUID.fromString(entry.getKey()));
             if(!offlinePlayer.isOnline() && !offlinePlayer.hasPlayedBefore()) continue;
 
-            builder.append(String.format("  §7• %s. %s - §d%s§r", i + 1, offlinePlayer.getName(), entry.getValue().intValue())).append("\n");
+            builder.append(String.format(" §7• §d%s§7. %s - §d%s§r", i + 1, sender.getName().equalsIgnoreCase(offlinePlayer.getName()) ? "§6" + offlinePlayer.getName()  : offlinePlayer.getName(), entry.getValue().intValue())).append("\n");
             i++;
         }
 
