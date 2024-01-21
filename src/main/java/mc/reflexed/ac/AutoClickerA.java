@@ -44,23 +44,21 @@ public class AutoClickerA extends Check {
             return;
         }
 
-        // check if it has any variation
-        int max = 0, min = 0;
-
+        int max = -1, min = -1;
         for(CPS cps : cps) {
-            if(cps.getClicks() > max) {
+            if(max == -1 || cps.getClicks() > max) {
                 max = cps.getClicks();
             }
 
-            if(cps.getClicks() <= min) {
+            if(min == -1 || cps.getClicks() < min) {
                 min = cps.getClicks();
             }
         }
 
-        ChatUtil.broadcast("max=" + max + " " + "min=" + min);
+        if(max == -1 || min == -1) return;
 
         if(max - min > 3) {
-            flag("max=" + max, "min=" + min);
+            ChatUtil.message("You would have been flagged for Auto Clicker", player);
         }
     }
 
