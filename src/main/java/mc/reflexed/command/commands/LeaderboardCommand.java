@@ -50,7 +50,7 @@ public class LeaderboardCommand implements ICommandExecutor {
     @Override
     public String[] tabComplete(CommandSender sender, String[] args, String label) {
         if(args.length == 1) {
-            return new String[] { "kills", "level" };
+            return new String[] { "kills", "level", "kdr" };
         }
 
         return new String[0];
@@ -78,6 +78,24 @@ public class LeaderboardCommand implements ICommandExecutor {
                     setLeaderboard(leaderboard, key, "level");
                 }
             }
+            case "kdr" -> {
+                for(String key : config.getKeys(false)) {
+                    if(!config.isConfigurationSection(key)) continue;
+
+                    ConfigurationSection section = userDatabase.getOfflineUser(UUID.fromString(key));
+                    if(section == null) continue;
+
+                    double kills = section.contains("kills") ? section.getDouble("kills") : 0;
+                    double deaths = section.contains("deaths") ? section.getDouble("deaths") : 0;
+                    double kdr = kills == 0 || deaths == 0 ? 0 : (kills / deaths);
+
+                    leaderboard.put(key, kdr);
+                }
+            }
+        }
+
+        if (type.equalsIgnoreCase("kdr")) {
+            type = "KDR";
         }
 
         Map<String, Double> sorted = leaderboard.entrySet().stream().sorted((o1, o2) -> o2.getValue().compareTo(o1.getValue()))
