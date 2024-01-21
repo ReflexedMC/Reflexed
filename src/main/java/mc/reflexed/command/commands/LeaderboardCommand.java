@@ -28,7 +28,7 @@ public class LeaderboardCommand implements ICommandExecutor {
             return false;
         }
 
-        if(!args[0].equalsIgnoreCase("kills") && !args[0].equalsIgnoreCase("level") && !args[0].equalsIgnoreCase("kdr")) {
+        if(!args[0].equalsIgnoreCase("kills") && !args[0].equalsIgnoreCase("level")) {
             sender.sendMessage(Component.text("§c/" + label + " <kills/level> <page>"));
             return false;
         }
