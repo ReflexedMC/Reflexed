@@ -53,6 +53,9 @@ public class User {
     private long pearlCooldownTime;
     private double enderPearlDeaths;
 
+    @Savable(Type.STRING)
+    private String hotbarHashedData;
+
     public User(Player player, UserRank rank) {
         this.player = player;
         this.rank = rank;
@@ -70,6 +73,29 @@ public class User {
         ChatUtil.message(String.format("§aYour rank has been updated to %s§a!", rank.getPrefix()), player);
 
         Reflexed.get().getUserDatabase().saveUser(this);
+    }
+
+    public void hashHotbar() {
+        StringBuilder hashedHotbar = new StringBuilder();
+        // 0 for no item, 1 for kbstick, 2 for enderpearl, 3 for cobweb
+        for (int i = 0; i < 9; i++) {
+            ItemStack item = player.getInventory().getItem(i);
+            if (item == null) {
+                hashedHotbar.append("0");
+            } else if (item.getType() == Material.STICK) {
+                hashedHotbar.append("1");
+            } else if (item.getType() == Material.ENDER_PEARL) {
+                hashedHotbar.append("2");
+            } else if (item.getType() == Material.COBWEB) {
+                hashedHotbar.append("3");
+            } else if (item.getType() == Material.WHITE_CONCRETE) {
+                hashedHotbar.append("4");
+            } else {
+                hashedHotbar.append("0");
+            }
+        }
+
+        hotbarHashedData = hashedHotbar.toString();
     }
 
     @EventInfo

@@ -239,11 +239,26 @@ public class GameMap {
         stick.getItemMeta().displayName(Component.text("§a§lKnockback Stick"));
         stick.addUnsafeEnchantment(Enchantment.KNOCKBACK, 1);
 
-        player.getInventory().addItem(stick,
-                new ItemStack(Material.WHITE_CONCRETE, 32),
-                new ItemStack(Material.ENDER_PEARL, 1),
-                new ItemStack(Material.COBWEB, 1)
-        );
+        if (User.getUser(player).getHotbarHashedData() == null) {
+            player.getInventory().addItem(stick,
+                    new ItemStack(Material.WHITE_CONCRETE, 32),
+                    new ItemStack(Material.ENDER_PEARL, 1),
+                    new ItemStack(Material.COBWEB, 1)
+            );
+            return;
+        }
+
+        for(int i = 0; i < 9; i++) {
+            char c = User.getUser(player).getHotbarHashedData().charAt(i);
+
+            switch (c) {
+                case '1' -> player.getInventory().setItem(i, stick);
+                case '2' -> player.getInventory().setItem(i, new ItemStack(Material.ENDER_PEARL, 1));
+                case '3' -> player.getInventory().setItem(i, new ItemStack(Material.COBWEB, 1));
+                case '4' -> player.getInventory().setItem(i, new ItemStack(Material.WHITE_CONCRETE, 32));
+                default -> player.getInventory().setItem(i, null);
+            }
+        }
     }
 
     public int getItemCount(Player player, Material material) {
