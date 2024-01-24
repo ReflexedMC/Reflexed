@@ -68,6 +68,7 @@ public final class Reflexed extends JavaPlugin {
         }
 
         userDatabase = new UserDatabase(new File(getDataFolder(), "users.yml"));
+        gameMap = new GameMap(this);
 
         Bukkit.getOnlinePlayers().forEach(player -> {
             User user = userDatabase.getUser(player);
@@ -86,8 +87,6 @@ public final class Reflexed extends JavaPlugin {
                 return User.getUser(player).getRank().getLevel() >= UserRank.MODERATOR.getLevel();
             }
         });
-
-        gameMap = new GameMap(this);
     }
 
     @Override
