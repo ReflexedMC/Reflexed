@@ -15,6 +15,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -24,6 +25,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import lombok.Getter;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -239,14 +241,16 @@ public class GameMap {
         stick.getItemMeta().displayName(Component.text("§a§lKnockback Stick"));
         stick.addUnsafeEnchantment(Enchantment.KNOCKBACK, 1);
 
-        if (User.getUser(player).getHotbarHashedData() == null) {
-            ChatUtil.broadcast("§cSomething went wrong.");
-            player.getInventory().addItem(stick,
-                    new ItemStack(Material.WHITE_CONCRETE, 32),
-                    new ItemStack(Material.ENDER_PEARL, 1),
-                    new ItemStack(Material.COBWEB, 1)
-            );
-            return;
+        String hotBarHashedData;
+        if (User.getUser(player) == null) {
+            ConfigurationSection section = Reflexed.get().getUserDatabase().getOfflineUser(player);
+            if (section.getString("hotbarHashedData") == null) {
+                hotBarHashedData = "142300000";
+            } else {
+                hotBarHashedData = section.getString("hotbarHashedData");
+            }
+        } else {
+            hotBarHashedData = User.getUser(player).getHotbarHashedData();
         }
 
         for(int i = 0; i < 9; i++) {
