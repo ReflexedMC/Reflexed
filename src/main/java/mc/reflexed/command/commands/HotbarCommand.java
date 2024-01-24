@@ -1,10 +1,12 @@
 package mc.reflexed.command.commands;
 
 import mc.reflexed.command.ICommandExecutor;
+import mc.reflexed.command.data.CommandInfo;
 import mc.reflexed.user.User;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+@CommandInfo(name = "hotbar", aliases = { "savehotbar" }, description = "Save your hotbar")
 public class HotbarCommand implements ICommandExecutor {
 
     @Override
