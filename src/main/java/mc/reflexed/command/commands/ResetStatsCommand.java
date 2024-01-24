@@ -11,8 +11,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.sql.Ref;
+import java.util.UUID;
 
 @CommandInfo(name = "resetstats", description = "Reset a player's stats")
 @Permission(UserRank.ADMIN)
@@ -23,6 +25,34 @@ public class ResetStatsCommand implements ICommandExecutor {
         if(args.length == 0) {
             sender.sendMessage("§c/" + label + " <player>");
             return false;
+        }
+
+        UserDatabase database = Reflexed.get().getUserDatabase();
+
+        if(args[0].equalsIgnoreCase("-a")) {
+            YamlConfiguration section = database.getYamlConfiguration();
+
+            for(String key : section.getKeys(false)) {
+                UUID uuid = UUID.fromString(key);
+                OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
+
+                if(player.isOnline()) {
+                    User user = User.getUser(player.getPlayer());
+
+                    user.setKills(0);
+                    user.setDeaths(0);
+                    user.setKillStreak(0);
+                    user.setLevel(1);
+                    user.setXp(0);
+
+                    User.getUser(player.getPlayer()).getSidebar().update();
+                    database.saveUser(user);
+                    return false;
+                }
+
+                section.set(key, null);
+            }
+
         }
 
         OfflinePlayer player = Bukkit.getOfflinePlayer(args[0]);
@@ -51,7 +81,6 @@ public class ResetStatsCommand implements ICommandExecutor {
             return true;
         }
 
-        UserDatabase database = Reflexed.get().getUserDatabase();
 
         if(database == null) {
             sender.sendMessage("§cUser database is not loaded!");
