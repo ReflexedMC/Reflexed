@@ -55,7 +55,7 @@ public class User {
     private double enderPearlDeaths;
 
     @Savable(Type.STRING)
-    private String hotbarHashedData;
+    private String hotbarHashedData = "142300000";
 
     public User(Player player, UserRank rank) {
         this.player = player;
@@ -79,9 +79,10 @@ public class User {
 
     public void hashHotbar() {
         StringBuilder hashedHotbar = new StringBuilder();
-        // 0 for no item, 1 for kbstick, 2 for enderpearl, 3 for cobweb
+            // 0 for no item, 1 for kbstick, 2 for enderpearl, 3 for cobweb
         for (int i = 0; i < 9; i++) {
             ItemStack item = player.getInventory().getItem(i);
+
             if (item == null) {
                 hashedHotbar.append("0");
             } else if (item.getType() == Material.STICK) {

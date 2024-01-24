@@ -279,4 +279,10 @@ public class GameMap {
         return count;
     }
 
+    public List<ReflexedBlock> getBlocks(User user) {
+        return this.blocks.stream()
+                .filter(reflexedBlock -> reflexedBlock.getPlacedBy().equals(user.getPlayer()))
+                .toList();
+    }
+
 }
