@@ -65,6 +65,7 @@ public class User {
 
         this.joinSince = System.currentTimeMillis();
         eventManager.register(this, player);
+        users.add(this);
     }
 
     public void updateRank(UserRank rank) {

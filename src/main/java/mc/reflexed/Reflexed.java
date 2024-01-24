@@ -71,8 +71,7 @@ public final class Reflexed extends JavaPlugin {
         gameMap = new GameMap(this);
 
         Bukkit.getOnlinePlayers().forEach(player -> {
-            User user = userDatabase.getUser(player);
-            User.getUsers().add(user);
+            userDatabase.getUser(player);
         });
 
         eventManager.register(this);
@@ -104,13 +103,10 @@ public final class Reflexed extends JavaPlugin {
 
     @EventInfo
     public void onJoin(PlayerJoinEvent e) {
-        User user = userDatabase.getUser(e.getPlayer());
+        userDatabase.getUser(e.getPlayer());
         Player player = e.getPlayer();
-
         gameMap.giveStuff(player, true);
         player.teleport(gameMap.getDatabase().getSpawn());
-
-        User.getUsers().add(user);
     }
 
 
