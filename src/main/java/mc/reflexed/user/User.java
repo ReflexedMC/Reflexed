@@ -100,6 +100,10 @@ public class User {
         ChatUtil.broadcast("§a" + hotbarHashedData);
     }
 
+    public void resetHotbar() {
+        hotbarHashedData = "142300000";
+    }
+
     @EventInfo
     public void onQuit(Player player, PlayerQuitEvent e) {
         this.playTime = playTime();
