@@ -79,26 +79,32 @@ public class User {
 
     public void hashHotbar() {
         StringBuilder hashedHotbar = new StringBuilder();
-            // 0 for no item, 1 for kbstick, 2 for enderpearl, 3 for cobweb
         for (int i = 0; i < 9; i++) {
             ItemStack item = player.getInventory().getItem(i);
 
-            if (item == null) {
-                hashedHotbar.append("0");
-            } else if (item.getType() == Material.STICK) {
-                hashedHotbar.append("1");
-            } else if (item.getType() == Material.ENDER_PEARL) {
-                hashedHotbar.append("2");
-            } else if (item.getType() == Material.COBWEB) {
-                hashedHotbar.append("3");
-            } else if (item.getType() == Material.WHITE_CONCRETE) {
-                hashedHotbar.append("4");
-            } else {
-                hashedHotbar.append("0");
-            }
+            if (item == null) hashedHotbar.append("0");
+            else if (item.getType() == Material.STICK) hashedHotbar.append("1");
+            else if (item.getType() == Material.ENDER_PEARL) hashedHotbar.append("2");
+            else if (item.getType() == Material.COBWEB) hashedHotbar.append("3");
+            else if (item.getType() == Material.WHITE_CONCRETE) hashedHotbar.append("4");
+            else hashedHotbar.append("0");
         }
 
+        if (!hashedHotbar.toString().contains("1")) set(hashedHotbar, '1');
+        if (!hashedHotbar.toString().contains("2")) set(hashedHotbar, '2');
+        if (!hashedHotbar.toString().contains("3")) set(hashedHotbar, '3');
+        if (!hashedHotbar.toString().contains("4")) set(hashedHotbar, '4');
+
         hotbarHashedData = hashedHotbar.toString();
+    }
+
+    public void set(StringBuilder stringBuilder, char c) {
+        for (int j = 0; j < 9; j++) {
+            if (stringBuilder.charAt(j) == '0') {
+                stringBuilder.setCharAt(j, c);
+                break;
+            }
+        }
     }
 
     public void resetHotbar() {
