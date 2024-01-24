@@ -102,44 +102,6 @@ public class UserDatabase {
                 }
             }
 
-            for(String key : yamlConfiguration.getKeys(false)) {
-                if(!yamlConfiguration.isConfigurationSection(key)) continue;
-
-                ConfigurationSection section = Reflexed.get()
-                        .getUserDatabase()
-                        .getOfflineUser(player);
-
-                UUID uuid = UUID.fromString(key);
-                if(uuid.equals(player.getUniqueId())) continue;
-
-                if(section == null) continue;
-
-                double kills = section.contains("kills") ? section.getDouble("kills") : 0;
-                double deaths = section.contains("deaths") ? section.getDouble("deaths") : 0;
-                double level = section.contains("level") ? section.getDouble("level") : 1;
-                long playTime = section.contains("playTime") ? section.getLong("playTime") : 0;
-
-                String hotbarHashedData = section.contains("hotbarHashedData") ? section.getString("hotbarHashedData") : "142300000";
-                UserRank rank = UserRank.forName(section.contains("rank") ? section.getString("rank") : "DEFAULT");
-
-                if(user.getKills() + user.getDeaths() == 0) continue;
-
-                user.setKills(kills);
-                user.setDeaths(deaths);
-                user.setPlayTime(playTime);
-
-                if(user.getLevel() < level) user.setLevel(level);
-                if(user.getRank().getLevel() < rank.getLevel()) user.setRank(rank);
-
-                user.setHotbarHashedData(hotbarHashedData);
-
-                for(String value : new String[] { "kills", "deaths", "level", "playTime", "hotbarHashedData", "rank", "xp" }) section.set(value, null);
-                yamlConfiguration.set(uuid.toString(), null);
-
-                saveConfig();
-                reloadConfig();
-            }
-
             user.getSidebar().update();
             return user;
         } catch (YAMLException | IllegalAccessException e) {
