@@ -265,7 +265,6 @@ public class GameMap {
                 default -> player.getInventory().setItem(i, null);
             }
         }
-        ChatUtil.broadcast("§a" + User.getUser(player).getHotbarHashedData());
     }
 
     public int getItemCount(Player player, Material material) {

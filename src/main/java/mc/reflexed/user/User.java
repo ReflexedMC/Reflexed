@@ -98,7 +98,6 @@ public class User {
         }
 
         hotbarHashedData = hashedHotbar.toString();
-        ChatUtil.broadcast("§a" + hotbarHashedData);
     }
 
     public void resetHotbar() {
