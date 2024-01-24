@@ -17,6 +17,7 @@ import mc.reflexed.user.data.UserRank;
 import mc.reflexed.util.ChatUtil;
 import mc.reflexed.util.MathUtil;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -96,6 +97,7 @@ public class User {
         }
 
         hotbarHashedData = hashedHotbar.toString();
+        ChatUtil.broadcast("§a" + hotbarHashedData);
     }
 
     @EventInfo
