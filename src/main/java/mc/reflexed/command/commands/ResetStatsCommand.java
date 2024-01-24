@@ -57,6 +57,9 @@ public class ResetStatsCommand implements ICommandExecutor {
                 section.set(key + ".playTime", 0);
                 section.set(key + ".rank", "DEFAULT");
                 section.set(key, null);
+
+                database.saveConfig();
+                database.reloadConfig();
             }
 
         }
