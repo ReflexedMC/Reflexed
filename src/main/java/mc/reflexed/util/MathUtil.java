@@ -16,6 +16,10 @@ public class MathUtil extends Util {
         return new BigDecimal(d).setScale(places, RoundingMode.HALF_EVEN).doubleValue();
     }
 
+    public static double bigger(double d1, double d2) {
+        return Math.max(d1, d2);
+    }
+
     public static double round(double d, int i) {
         return Math.round(d * Math.pow(10, i)) / Math.pow(10, i);
     }

@@ -1,9 +1,12 @@
 package mc.reflexed.user;
 
 import lombok.Getter;
+import mc.reflexed.Reflexed;
 import mc.reflexed.user.data.Savable;
 import mc.reflexed.user.data.Type;
 import mc.reflexed.user.data.UserRank;
+import mc.reflexed.util.ChatUtil;
+import mc.reflexed.util.MathUtil;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -73,8 +76,6 @@ public class UserDatabase {
         try {
             User user = new User(player, UserRank.DEFAULT);
 
-            if(!yamlConfiguration.contains(player.getUniqueId().toString())) return user;
-
             Field[] fields = user.getClass().getDeclaredFields();
             for(Field field : fields) {
                 field.setAccessible(true);
@@ -86,9 +87,59 @@ public class UserDatabase {
                         case ENUM -> field.set(user, Enum.valueOf((Class<Enum>) field.getType(), Objects.requireNonNull(yamlConfiguration.getString(player.getUniqueId() + "." + field.getName()))));
                         case BOOLEAN -> field.setBoolean(user, yamlConfiguration.getBoolean(player.getUniqueId() + "." + field.getName()));
                         case STRING -> field.set(user, yamlConfiguration.getString(player.getUniqueId() + "." + field.getName()));
-                        case NUMBER -> field.set(user, yamlConfiguration.getInt(player.getUniqueId() + "." + field.getName()));
+                        case NUMBER -> {
+                            switch (field.getAnnotation(Savable.class).numberType().getSimpleName()) {
+                                case "Integer" -> field.set(user, yamlConfiguration.getInt(player.getUniqueId() + "." + field.getName()));
+                                case "Double" -> field.set(user, yamlConfiguration.getDouble(player.getUniqueId() + "." + field.getName()));
+                                case "Long" -> field.set(user, yamlConfiguration.getLong(player.getUniqueId() + "." + field.getName()));
+                                default -> {
+                                    ChatUtil.message("§cSomething went wrong while loading your stats. Please contact an administrator.", player);
+                                    return null;
+                                }
+                            }
+                        }
                     }
                 }
+            }
+
+            for(String key : yamlConfiguration.getKeys(false)) {
+                if(!yamlConfiguration.isConfigurationSection(key)) continue;
+
+                ConfigurationSection section = Reflexed.get()
+                        .getUserDatabase()
+                        .getOfflineUser(player);
+
+                UUID uuid = UUID.fromString(key);
+                if(uuid.equals(player.getUniqueId())) continue;
+
+                if(section == null) continue;
+
+                double kills = section.contains("kills") ? section.getDouble("kills") : 0;
+                double deaths = section.contains("deaths") ? section.getDouble("deaths") : 0;
+                double level = section.contains("level") ? section.getDouble("level") : 1;
+                long playTime = section.contains("playTime") ? section.getLong("playTime") : 0;
+
+                String hotbarHashedData = section.contains("hotbarHashedData") ? section.getString("hotbarHashedData") : "142300000";
+                UserRank rank = UserRank.forName(section.contains("rank") ? section.getString("rank") : "DEFAULT");
+
+                if(user.getKills() + user.getDeaths() == 0) continue;
+
+                user.setKills(kills);
+                user.setDeaths(deaths);
+                user.setPlayTime(playTime);
+
+                if(user.getLevel() < level) user.setLevel(level);
+                if(user.getRank().getLevel() < rank.getLevel()) user.setRank(rank);
+
+                user.setHotbarHashedData(hotbarHashedData);
+
+                for(String value : new String[] { "kills", "deaths", "level", "playTime", "hotbarHashedData", "rank", "xp" }) {
+                    section.set(value, null);
+                }
+                yamlConfiguration.set(uuid.toString(), null);
+
+                saveConfig();
+                reloadConfig();
             }
 
             user.getSidebar().update();

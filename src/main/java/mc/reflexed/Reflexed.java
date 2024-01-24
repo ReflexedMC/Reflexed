@@ -74,10 +74,6 @@ public final class Reflexed extends JavaPlugin {
         userDatabase = new UserDatabase(new File(getDataFolder(), "users.yml"));
         gameMap = new GameMap(this);
 
-        Bukkit.getOnlinePlayers().forEach(player -> {
-            userDatabase.getUser(player);
-        });
-
         eventManager.register(this);
         ac = new ReflexedAC(eventManager, new AntiCheatConsumer() {
             @Override
@@ -90,6 +86,8 @@ public final class Reflexed extends JavaPlugin {
                 return User.getUser(player).getRank().getLevel() >= UserRank.MODERATOR.getLevel();
             }
         });
+
+        Bukkit.getOnlinePlayers().forEach(player -> userDatabase.getUser(player));
     }
 
     @Override

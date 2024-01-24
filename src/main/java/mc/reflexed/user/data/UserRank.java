@@ -18,6 +18,10 @@ public enum UserRank {
     final int level;
 
     public static UserRank forName(String name) {
-        return UserRank.valueOf(name.toUpperCase());
+        try {
+            return UserRank.valueOf(name.toUpperCase());
+        } catch (Exception e) {
+            return UserRank.DEFAULT;
+        }
     }
 }

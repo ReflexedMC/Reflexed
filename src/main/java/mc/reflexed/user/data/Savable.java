@@ -9,4 +9,5 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 public @interface Savable {
     Type value();
+    Class<? extends Number> numberType() default Integer.class;
 }

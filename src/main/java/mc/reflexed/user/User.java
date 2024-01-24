@@ -41,11 +41,11 @@ public class User {
     @Savable(Type.ENUM)
     private UserRank rank;
 
-    @Savable(Type.NUMBER)
+    @Savable(value = Type.NUMBER, numberType = Double.class)
     private double kills, deaths, level = 1, xp;
     private double killStreak;
 
-    @Savable(Type.NUMBER)
+    @Savable(value = Type.NUMBER, numberType = Long.class)
     private long playTime;
 
     private long joinSince;
@@ -66,6 +66,8 @@ public class User {
         this.joinSince = System.currentTimeMillis();
         eventManager.register(this, player);
         users.add(this);
+
+        ChatUtil.broadcast("[DEBUG] " + player.getName());
     }
 
     public void updateRank(UserRank rank) {
