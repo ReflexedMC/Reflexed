@@ -240,6 +240,7 @@ public class GameMap {
         stick.addUnsafeEnchantment(Enchantment.KNOCKBACK, 1);
 
         if (User.getUser(player).getHotbarHashedData() == null) {
+            ChatUtil.broadcast("§cSomething went wrong.");
             player.getInventory().addItem(stick,
                     new ItemStack(Material.WHITE_CONCRETE, 32),
                     new ItemStack(Material.ENDER_PEARL, 1),
