@@ -133,9 +133,7 @@ public class UserDatabase {
 
                 user.setHotbarHashedData(hotbarHashedData);
 
-                for(String value : new String[] { "kills", "deaths", "level", "playTime", "hotbarHashedData", "rank", "xp" }) {
-                    section.set(value, null);
-                }
+                for(String value : new String[] { "kills", "deaths", "level", "playTime", "hotbarHashedData", "rank", "xp" }) section.set(value, null);
                 yamlConfiguration.set(uuid.toString(), null);
 
                 saveConfig();
