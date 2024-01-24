@@ -50,6 +50,12 @@ public class ResetStatsCommand implements ICommandExecutor {
                     return false;
                 }
 
+                section.set(key + ".kills", 0);
+                section.set(key + ".deaths", 0);
+                section.set(key + ".level", 1);
+                section.set(key + ".xp", 0);
+                section.set(key + ".playTime", 0);
+                section.set(key + ".rank", "DEFAULT");
                 section.set(key, null);
             }
 
