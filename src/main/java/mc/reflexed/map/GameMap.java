@@ -254,7 +254,8 @@ public class GameMap {
         }
 
         for(int i = 0; i < 9; i++) {
-            char c = User.getUser(player).getHotbarHashedData().charAt(i);
+            assert hotBarHashedData != null;
+            char c = hotBarHashedData.charAt(i);
 
             switch (c) {
                 case '1' -> player.getInventory().setItem(i, stick);
