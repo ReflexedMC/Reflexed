@@ -7,6 +7,7 @@ import mc.reflexed.ac.check.CheckManager;
 import mc.reflexed.command.CommandManager;
 import mc.reflexed.command.ReflexedCommand;
 import mc.reflexed.command.commands.*;
+import mc.reflexed.discord.Discord;
 import mc.reflexed.event.EventManager;
 import mc.reflexed.event.data.EventInfo;
 import mc.reflexed.map.GameMap;
@@ -22,7 +23,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.sql.Ref;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +35,7 @@ public final class Reflexed extends JavaPlugin {
 
     private final CommandManager commandManager;
     private final EventManager eventManager;
+    private final Discord discord;
 
     private UserDatabase userDatabase;
     private GameMap gameMap;
@@ -43,11 +44,13 @@ public final class Reflexed extends JavaPlugin {
     public Reflexed() {
         this.commandManager = new CommandManager(this);
         this.eventManager = new EventManager(this);
+        this.discord = new Discord(this);
     }
 
     @Override
     public void onEnable() {
         eventManager.onEnable();
+        discord.onEnable();
 
         ReflexedCommand.createCommands(
                 new TestCommand(), new GrantCommand(),
@@ -93,6 +96,7 @@ public final class Reflexed extends JavaPlugin {
     @Override
     public void onDisable() {
         commandManager.onDisable();
+        discord.onDisable();
 
         List<User> users = new ArrayList<>(User.getUsers());
         users.forEach((user) -> {
