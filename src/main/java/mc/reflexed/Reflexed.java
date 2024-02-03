@@ -60,7 +60,7 @@ public final class Reflexed extends JavaPlugin {
                 new MapCommand(), new BuildCommand(),
                 new ComboCommand(), new PingCommand(),
                 new LeaderboardCommand(), new HotbarCommand(),
-                new VanishCommand()
+                new VanishCommand(), new DiscordComamnd()
         );
 
         CheckManager.addChecks(
