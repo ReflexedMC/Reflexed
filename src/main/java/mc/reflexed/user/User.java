@@ -83,10 +83,22 @@ public class User {
             ItemStack item = player.getInventory().getItem(i);
 
             if (item == null) hashedHotbar.append("0");
-            else if (item.getType() == Material.STICK) hashedHotbar.append("1");
-            else if (item.getType() == Material.ENDER_PEARL) hashedHotbar.append("2");
-            else if (item.getType() == Material.COBWEB) hashedHotbar.append("3");
-            else if (item.getType() == Material.WHITE_CONCRETE) hashedHotbar.append("4");
+            else if (item.getType() == Material.STICK) {
+                if (hashedHotbar.toString().contains("1")) hashedHotbar.append("0");
+                else hashedHotbar.append("1");
+            }
+            else if (item.getType() == Material.ENDER_PEARL) {
+                if (hashedHotbar.toString().contains("2")) hashedHotbar.append("0");
+                else hashedHotbar.append("2");
+            }
+            else if (item.getType() == Material.COBWEB) {
+                if (hashedHotbar.toString().contains("3")) hashedHotbar.append("0");
+                else hashedHotbar.append("3");
+            }
+            else if (item.getType() == Material.WHITE_CONCRETE) {
+                if (hashedHotbar.toString().contains("4")) hashedHotbar.append("0");
+                else hashedHotbar.append("4");
+            }
             else hashedHotbar.append("0");
         }
 
