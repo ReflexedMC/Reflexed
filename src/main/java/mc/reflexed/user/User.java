@@ -82,24 +82,22 @@ public class User {
         for (int i = 0; i < 9; i++) {
             ItemStack item = player.getInventory().getItem(i);
 
-            if (item == null) hashedHotbar.append("0");
-            else if (item.getType() == Material.STICK) {
-                if (hashedHotbar.toString().contains("1")) hashedHotbar.append("0");
-                else hashedHotbar.append("1");
+            switch (item != null ? item.getType() : null) {
+                case STICK:
+                    hashedHotbar.append(hashedHotbar.toString().contains("1") ? "0" : "1");
+                    break;
+                case ENDER_PEARL:
+                    hashedHotbar.append(hashedHotbar.toString().contains("2") ? "0" : "2");
+                    break;
+                case COBWEB:
+                    hashedHotbar.append(hashedHotbar.toString().contains("3") ? "0" : "3");
+                    break;
+                case WHITE_CONCRETE:
+                    hashedHotbar.append(hashedHotbar.toString().contains("4") ? "0" : "4");
+                    break;
+                default:
+                    hashedHotbar.append("0");
             }
-            else if (item.getType() == Material.ENDER_PEARL) {
-                if (hashedHotbar.toString().contains("2")) hashedHotbar.append("0");
-                else hashedHotbar.append("2");
-            }
-            else if (item.getType() == Material.COBWEB) {
-                if (hashedHotbar.toString().contains("3")) hashedHotbar.append("0");
-                else hashedHotbar.append("3");
-            }
-            else if (item.getType() == Material.WHITE_CONCRETE) {
-                if (hashedHotbar.toString().contains("4")) hashedHotbar.append("0");
-                else hashedHotbar.append("4");
-            }
-            else hashedHotbar.append("0");
         }
 
         if (!hashedHotbar.toString().contains("1")) set(hashedHotbar, '1');
