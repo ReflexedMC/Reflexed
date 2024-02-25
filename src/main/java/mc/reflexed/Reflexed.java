@@ -61,7 +61,7 @@ public final class Reflexed extends JavaPlugin {
                 new ComboCommand(), new PingCommand(),
                 new LeaderboardCommand(), new HotbarCommand(),
                 new VanishCommand(), new DiscordComamnd(),
-                new InvSeeCommand()
+                new InvSeeCommand(), new ShopCommand()
         );
 
         CheckManager.addChecks(
