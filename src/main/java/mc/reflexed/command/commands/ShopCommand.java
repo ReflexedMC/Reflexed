@@ -47,10 +47,11 @@ public class ShopCommand implements ICommandExecutor {
             if(event.getCurrentItem() == null || event.getCurrentItem().getType() == Material.AIR) return;
 
             String displayName = PlainTextComponentSerializer.plainText().serialize(Objects.requireNonNull(event.getCurrentItem().getItemMeta().displayName()));
+            String name = displayName.toLowerCase();
 
-            if(displayName.equalsIgnoreCase("Cosmetic Shop")) {
+            if(name.contains("cosmetic shop")) {
                 event.getWhoClicked().sendMessage("§cThis feature is not yet implemented. (cosmetic shop)");
-            } if(displayName.equalsIgnoreCase("Upgrade Shop")) {
+            } if(name.contains("upgrade shop")) {
                 event.getWhoClicked().sendMessage("§cThis feature is not yet implemented. (upgrade shop)");
             }
         }
