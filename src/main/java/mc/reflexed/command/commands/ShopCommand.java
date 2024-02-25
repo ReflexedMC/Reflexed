@@ -1,5 +1,6 @@
 package mc.reflexed.command.commands;
 
+import mc.reflexed.Reflexed;
 import mc.reflexed.command.ICommandExecutor;
 import mc.reflexed.command.data.CommandInfo;
 import mc.reflexed.event.data.EventInfo;
@@ -20,6 +21,12 @@ import java.util.Objects;
 
 @CommandInfo(name = "shop", description = "Opens the shop GUI")
 public class ShopCommand implements ICommandExecutor {
+
+    public ShopCommand() {
+        super();
+
+        Reflexed.get().getEventManager().register(this);
+    }
 
     @Override
     public boolean execute(CommandSender sender, String[] args, String label) {
